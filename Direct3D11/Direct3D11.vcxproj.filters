@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D3D11GraphicsContext.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Maps.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11RenderWindow.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11DLLExport.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Macros.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11RenderTarget.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D3D11GraphicsContext.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11RenderWindow.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Maps.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

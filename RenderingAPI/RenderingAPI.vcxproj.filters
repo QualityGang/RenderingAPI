@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b7d0ef4d-b698-4fd0-9c83-b84e0cfaa912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{d8d0e7e0-4617-461f-9823-589d9b14edf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Common">
+      <UniqueIdentifier>{5e5c8434-dac1-424a-b39f-28216a08113d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Enums">
+      <UniqueIdentifier>{3d4a5910-77d4-4659-8db0-e32525fe2b7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Structs">
+      <UniqueIdentifier>{899a3dd1-cfa6-4dcc-ada0-bbfd57fa1dc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Math">
+      <UniqueIdentifier>{642241fc-949d-4e89-a040-733891882473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Cameras">
+      <UniqueIdentifier>{9c341397-b71b-4b9f-b8cb-774d1629f1f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Rendering">
+      <UniqueIdentifier>{44035ac5-f65d-4516-a58b-7368aa99f675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Window">
+      <UniqueIdentifier>{f24c69e1-21f8-4673-88fc-418985f39ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bindings">
+      <UniqueIdentifier>{90e0df10-b8dc-4bef-a637-10c8954b0c45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Rendering\Shaders">
+      <UniqueIdentifier>{b3d87ad6-a6e9-4d29-ac8f-4f28c2e8e9bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Rendering\Shaders\Header Files">
+      <UniqueIdentifier>{f0e90b0f-39b9-45b6-9c84-a7bb358459e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MapType.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingAPI.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="DLLExport.h">
+      <Filter>Source\Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="NonCopyable.h">
+      <Filter>Source\Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureFlag.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveTopology.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureFilter.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="AddressMode.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelFormat.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="FillMode.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="CullMode.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexOrder.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendFactor.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendOp.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorWriteMask.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthWriteMask.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="ComparisonFunc.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="StencilOp.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterizerState.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendDesc.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendState.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="StencilDesc.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencilState.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexElement.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDataType.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerState.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferType.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="MapData.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Throw.h">
+      <Filter>Source\Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureSize.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsDevice.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="DynLib.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsContext.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Source\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="OrthographicCamera.h">
+      <Filter>Source\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteVS.h">
+      <Filter>Source\Rendering\Shaders\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePS.h">
+      <Filter>Source\Rendering\Shaders\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Source\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="WndEvent.h">
+      <Filter>Source\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Handles.h">
+      <Filter>Source\Core\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="AlignedNew.h">
+      <Filter>Source\Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteBatch.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteEffect.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSoftMode.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="TextMetrics.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="FontAtlas.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="stringex.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Keys.h">
+      <Filter>Source\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTexture.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="AccessFlag.h">
+      <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DynLib.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsDevice.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="OrthographicCamera.cpp">
+      <Filter>Source\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsDeviceBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="WndEventBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="OrthographicCameraBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBatch.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="FontAtlas.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="stringex.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="TextMetrics.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTexture.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBatchBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="SpriteVS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="SpritePS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Sprite.fx">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
