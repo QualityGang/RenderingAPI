@@ -26,7 +26,7 @@ void RenderTexture::initRenderTarget(hTexture2D texture, uint32_t width, uint32_
 {
 	hTexture2D depthStencilBuffer = context->createTexture2D(
 		width, height, PixelFormat_D24S8,
-		1, 1, TextureFlag_DepthStencil, AccessFlag_None, nullptr, 0
+		1, 1, TextureFlag_DepthStencil, AccessFlag_Default, nullptr, 0
 	);
 
 	RenderTarget rtDesc;
