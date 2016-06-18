@@ -1,7 +1,9 @@
 
 #include <iostream>
+
+#if _DEBUG
 #include <chrono>
-#include <vld.h>
+#endif
 
 #include <GraphicsDevice.h>
 #include <Window.h>

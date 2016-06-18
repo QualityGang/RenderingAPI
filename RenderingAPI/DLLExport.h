@@ -6,4 +6,6 @@
 #else
 #define DLL_REN_API  __declspec(dllimport)
 #endif
+#else
+#define DLL_REN_API
 #endif

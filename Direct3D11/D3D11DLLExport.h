@@ -6,4 +6,6 @@
 #else
 #define DLL_D3D11_API  __declspec(dllimport)
 #endif
+#else
+#define DLL_D3D11_API
 #endif
