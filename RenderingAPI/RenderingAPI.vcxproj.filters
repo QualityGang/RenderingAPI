@@ -183,9 +183,6 @@
     <ClInclude Include="SpriteSoftMode.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="TextMetrics.h">
-      <Filter>Source\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
@@ -206,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="AccessFlag.h">
       <Filter>Source\Core\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Source\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -255,9 +255,6 @@
       <Filter>Source\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="stringex.cpp">
-      <Filter>Source\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="TextMetrics.cpp">
       <Filter>Source\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="RenderTexture.cpp">

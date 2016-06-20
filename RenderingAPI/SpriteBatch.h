@@ -1,25 +1,16 @@
 #pragma once
 
-#include <DirectXMath.h>
 #include <vector>
 
 #include "GraphicsContext.h"
 #include "FontAtlas.h"
 #include "Sprite.h"
+#include "Text.h"
 #include "Camera.h"
-#include "Rect.h"
 #include "SpriteSoftMode.h"
 #include "AlignedNew.h"
 #include "NonCopyable.h"
 #include "DLLExport.h"
-
-struct Text
-{
-	const char *str;
-	DirectX::XMFLOAT3 position;
-	float lineGap;
-	Color color;
-};
 
 class SpriteBatch : public NonCopyable
 {

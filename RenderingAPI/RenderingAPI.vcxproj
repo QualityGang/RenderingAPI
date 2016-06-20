@@ -204,7 +204,7 @@
     <ClInclude Include="SpriteEffect.h" />
     <ClInclude Include="SpriteSoftMode.h" />
     <ClInclude Include="stringex.h" />
-    <ClInclude Include="TextMetrics.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="WndEvent.h" />
     <FxCompile Include="SpritePS.hlsl">
       <FileType>CppHeader</FileType>
@@ -298,7 +298,6 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="stringex.cpp" />
-    <ClCompile Include="TextMetrics.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowBindings.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

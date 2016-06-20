@@ -53,12 +53,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	FontAtlas atlas(context, FA_ALLLOWERCASE FA_ALLUPPERCASE FA_ALLNUMBERS "'!?", font);
 
 	Text text;
-	text.str = "Hey there!\nWhat's up?";
-	text.position.x = 800;
-	text.position.y = 800;
-	text.position.z = 0;
-	text.lineGap = 5;
-	text.color.set(0, 0, 0, 255);
+	text.setString("Hey there!\nWhat's up?");
+	text.setPosition(800, 800);
+	text.setLineGap(5);
+	text.setColor(Color(0, 0, 0, 255));
 
 	OrthographicCamera camera((float)window.getSize().x, (float)window.getSize().y, false);
 	camera.setPosition((float)window.getSize().x / -2.0f, (float)window.getSize().y / -2.0f);
