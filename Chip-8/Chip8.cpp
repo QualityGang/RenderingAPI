@@ -72,13 +72,16 @@ void Chip8::load(const char *rom)
 	std::streampos length = is.tellg();
 	is.seekg(0, is.beg);
 
-	char *buffer = new char[length] { 0 };
+	if (length.seekpos() == -1)
+		return;
+
+	char *buffer = new char[(unsigned int)length.seekpos()] { 0 };
 	is.read(buffer, length);
 
 	//if (!is)
 	//	return; //throw std::exception();
 
-	is.close();
+	//is.close();
 
 	if (length.seekpos() + 512 > 4096)
 		return;

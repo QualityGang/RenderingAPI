@@ -4,7 +4,6 @@
 
 #include "Throw.h"
 
-#include "TextMetrics.h"
 #include "stringex.h"
 
 #include "SpriteVS.h"
@@ -352,13 +351,13 @@ void SpriteBatch::draw(const Text &text, const FontAtlas &atlas)
 	XMFLOAT2 pen(0, 0);
 
 	std::vector<std::string> lines;
-	stdex::split_string(text.str, "\n", &lines);
+	stdex::split_string(text.getString(), "\n", &lines);
 
 	uint32_t currLine = 0;
-	int maxAscent  = TextMetrics::GetMaxAscent(lines[currLine].c_str(), atlas);
-	int maxDescent = TextMetrics::GetMaxDescent(lines[currLine].c_str(), atlas);
+	int maxAscent  = atlas.getMaxAscent(lines[currLine].c_str());
+	int maxDescent = atlas.getMaxDescent(lines[currLine].c_str());
 
-	for (const char *lpStr = text.str; *lpStr; lpStr++)
+	for (const char *lpStr = text.getString(); *lpStr; lpStr++)
 	{
 		switch (*lpStr)
 		{
@@ -370,10 +369,10 @@ void SpriteBatch::draw(const Text &text, const FontAtlas &atlas)
 				continue;
 			case '\n':
 				pen.x = 0;
-				pen.y += text.lineGap + maxDescent + maxAscent;
+				pen.y += text.getLineGap() + maxDescent + maxAscent;
 				currLine++;
-				maxAscent  = TextMetrics::GetMaxAscent(lines[currLine].c_str(), atlas);
-				maxDescent = TextMetrics::GetMaxDescent(lines[currLine].c_str(), atlas);
+				maxAscent  = atlas.getMaxAscent(lines[currLine].c_str());
+				maxDescent = atlas.getMaxDescent(lines[currLine].c_str());
 				continue;
 		}
 
@@ -389,13 +388,13 @@ void SpriteBatch::draw(const Text &text, const FontAtlas &atlas)
 		pen.x += font->getKerning(prevGlyphIndex, glyphIndex);
 
 		Sprite sprite;
-		sprite.setPosition(text.position.x + pen.x + charInfo->rect.x, 
-						   text.position.y + pen.y - charInfo->rect.y + maxAscent);
+		sprite.setPosition(text.getX() + pen.x + charInfo->rect.x, 
+						   text.getY() + pen.y - charInfo->rect.y + maxAscent);
 		sprite.setSize((float)charInfo->rect.width, (float)charInfo->rect.height);
 		sprite.setSrcRect(FloatRect((float)charInfo->charPos.x,  (float)charInfo->charPos.y,
 									(float)charInfo->rect.width, (float)charInfo->rect.height));
-		sprite.setDepth(text.position.z);
-		sprite.setColor(text.color);
+		sprite.setDepth(text.getDepth());
+		sprite.setColor(text.getColor());
 		sprite.setTexture(atlas.getBitmap().getTexture2D());
 
 		draw(sprite);
