@@ -180,9 +180,6 @@
     <ClInclude Include="SpriteEffect.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteSoftMode.h">
-      <Filter>Source\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
@@ -206,6 +203,15 @@
     </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveBatch.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSortMode.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexTypes.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +272,12 @@
     <ClCompile Include="BitmapBindings.cpp">
       <Filter>Bindings</Filter>
     </ClCompile>
+    <ClCompile Include="PrimitiveBatch.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsContext.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="SpriteVS.hlsl">
@@ -274,9 +286,18 @@
     <FxCompile Include="SpritePS.hlsl">
       <Filter>Source\Rendering\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="PrimitiveVS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PrimitivePS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Sprite.fx">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </Text>
+    <Text Include="Primitive.fx">
       <Filter>Source\Rendering\Shaders</Filter>
     </Text>
   </ItemGroup>

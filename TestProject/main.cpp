@@ -8,6 +8,7 @@
 #include <GraphicsDevice.h>
 #include <Window.h>
 #include <Bitmap.h>
+#include <PrimitiveBatch.h>
 #include <SpriteBatch.h>
 #include <OrthographicCamera.h>
 #include <RenderTexture.h>
@@ -61,6 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	OrthographicCamera camera((float)window.getSize().x, (float)window.getSize().y, false);
 	camera.setPosition((float)window.getSize().x / -2.0f, (float)window.getSize().y / -2.0f);
 
+	PrimitiveBatch primBatch(context);
 	SpriteBatch batch(context);
 
 	WndEvent e;
@@ -137,6 +139,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			batch.draw(sprite3);
 			batch.draw(text, atlas);
 			batch.end();
+
+			primBatch.begin(window.getRenderTarget(), camera, PrimitiveTopology_TriangleList);
+			primBatch.drawRect(FloatRect(-400, -150, 300, 300), Color(0, 0, 255, 255));
+			primBatch.end();
 
 			window.swapBuffers();
 

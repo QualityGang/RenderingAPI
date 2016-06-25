@@ -33,8 +33,8 @@
 class GraphicsContext
 {
 public:
-	GraphicsContext()  = default;
-	~GraphicsContext() = default;
+	DLL_REN_API GraphicsContext();
+	DLL_REN_API ~GraphicsContext();
 
 	virtual uint32_t getPixelFormatStride(PixelFormat format) const = 0;
 
@@ -144,5 +144,28 @@ public:
 	
 	virtual void drawInstanced(uint32_t instanceCount, uint32_t count, uint32_t startVertex, uint32_t startInstance) const = 0;
 	virtual void drawIndexedInstanced(uint32_t instanceCount, uint32_t count, uint32_t startIndex, uint32_t startVertex, uint32_t startInstance) const = 0;
-};
 
+	hBlendState BSAlphaBlend;
+	hBlendState BSAdditive;
+	//hBlendState BSNonPremultiplied;
+	hBlendState BSOpaque;
+
+	hDepthStencilState DSSDefault;
+	hDepthStencilState DSSRead;
+	hDepthStencilState DSSNone;
+
+	hRasterizerState RSCullClockwise;
+	hRasterizerState RSCullCounterClockwise;
+	hRasterizerState RSCullNone;
+	hRasterizerState RSWireframe;
+
+	hSamplerState SSPointWrap;
+	hSamplerState SSPointClamp;
+	hSamplerState SSLinearWrap;
+	hSamplerState SSLinearClamp;
+	hSamplerState SSAnisotropicWrap;
+	hSamplerState SSAnisotropicClamp;
+protected:
+	DLL_REN_API void init(uint32_t maxAnisotropy);
+	DLL_REN_API void dispose();
+};

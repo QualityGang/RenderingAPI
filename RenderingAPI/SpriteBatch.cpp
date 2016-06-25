@@ -62,22 +62,6 @@ SpriteBatch::SpriteBatch(GraphicsContext *context, uint32_t batchSize)
 	
 	indexBuffer = context->createBuffer(BufferType_IndexBuffer,
 		sizeof(uint32_t) * batchSize * NUM_INDICES, AccessFlag_None, &indices[0]);
-
-	// create default states
-	BlendState blendState; // Alpha Blend
-	blendState.blendDesc[0].blendEnabled  = true;
-	blendState.blendDesc[0].srcBlend	  = BlendFactor_SrcAlpha;
-	blendState.blendDesc[0].srcBlendAlpha = BlendFactor_One;
-	blendState.blendDesc[0].dstBlend	  = BlendFactor_OneMinusSrcAlpha;
-	blendState.blendDesc[0].dstBlendAlpha = BlendFactor_Zero;
-	blendState.blendDesc[0].blendOp		  = BlendOp_Add;
-	blendState.blendDesc[0].blendOpAlpha  = BlendOp_Add;
-	blendState.blendDesc[0].writeMask     = ColorWriteMask_All;
-
-	defBlendState        = context->createBlendState(blendState);
-	defSamplerState      = context->createSamplerState(SamplerState());
-	defDepthStencilState = context->createDepthStencilState(DepthStencilState());
-	defRasterizerState   = context->createRasterizerState(RasterizerState());
 }
 
 SpriteBatch::~SpriteBatch()
@@ -87,21 +71,12 @@ SpriteBatch::~SpriteBatch()
 	context->releaseVertexShader(vertexShader);
 	context->releasePixelShader(pixelShader);
 	context->releaseVertexFormat(vertexFormat);
-
-	context->releaseBlendState(defBlendState);
-	context->releaseSamplerState(defSamplerState);
-	context->releaseDepthStencilState(defDepthStencilState);
-	context->releaseRasterizerState(defRasterizerState);
 }
 
 void SpriteBatch::begin(
 	hRenderTarget      renderTarget,
 	const Camera	   &camera,
 	SpriteSortMode	   sortMode,
-	hBlendState		   blendState,
-	hSamplerState      samplerState,
-	hDepthStencilState depthStencilState,
-	hRasterizerState   rasterizerState,
 	hVertexShader      customVertexShader,
 	hPixelShader       customPixelShader 
 )
@@ -117,10 +92,6 @@ void SpriteBatch::begin(
 	this->renderTarget       = renderTarget;
 	this->camera             = &camera;
 	this->sortMode           = sortMode;
-	this->blendState         = blendState;
-	this->samplerState       = samplerState;
-	this->depthStencilState  = depthStencilState;
-	this->rasterizerState    = rasterizerState;
 	this->customVertexShader = customVertexShader;
 	this->customPixelShader  = customPixelShader;
 
@@ -221,11 +192,6 @@ void SpriteBatch::prepare() const
 	context->setVertexShader(customVertexShader ? customVertexShader : vertexShader);
 	context->setPixelShader(customPixelShader ? customPixelShader : pixelShader);
 	context->setVertexFormat(vertexFormat);
-	
-	context->setBlendState(blendState ? blendState : defBlendState);
-	context->setPSSamplers((samplerState ? &samplerState : &defSamplerState), 0, 1);
-	context->setDepthStencilState(depthStencilState ? depthStencilState : defDepthStencilState);
-	context->setRasterizerState(rasterizerState ? rasterizerState : defRasterizerState);
 	
 	context->setRenderTarget(renderTarget);
 	context->setViewport((float)vpSize.width, (float)vpSize.height, 0.0f, 1.0f);

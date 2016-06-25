@@ -22,6 +22,8 @@ D3D11GraphicsContext::D3D11GraphicsContext()
 
 	if (FAILED(hr))
 		THROW("Failed to create device");
+
+	init(1);
 }
 
 D3D11GraphicsContext::~D3D11GraphicsContext()
@@ -37,6 +39,8 @@ D3D11GraphicsContext::~D3D11GraphicsContext()
 //		SafeRelease(d3d11Debug);
 //	}
 //#endif
+
+	dispose();
 
 	SafeRelease(device);
 	SafeRelease(immContext);
