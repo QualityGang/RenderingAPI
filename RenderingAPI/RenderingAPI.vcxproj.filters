@@ -213,6 +213,9 @@
     <ClInclude Include="VertexTypes.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowMap.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DynLib.cpp">
@@ -277,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="GraphicsContext.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMap.cpp">
+      <Filter>Source\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

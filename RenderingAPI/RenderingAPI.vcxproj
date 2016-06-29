@@ -181,6 +181,7 @@
     <ClInclude Include="Handles.h" />
     <ClInclude Include="PrimitiveBatch.h" />
     <ClInclude Include="RenderTexture.h" />
+    <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClCompile Include="BitmapBindings.cpp" />
@@ -195,6 +196,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="SpriteBatchBindings.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>

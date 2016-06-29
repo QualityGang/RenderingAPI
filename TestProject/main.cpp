@@ -12,6 +12,7 @@
 #include <SpriteBatch.h>
 #include <OrthographicCamera.h>
 #include <RenderTexture.h>
+#include <ShadowMap.h>
 
 #include <DirectXMath.h>
 
@@ -29,14 +30,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	Bitmap bmp(context, "box.png");
 
+	ShadowMap shadowMap(context, window.getSize().x, window.getSize().x);
+
 	Sprite sprite;
 	sprite.setSize(300, 300);
 	sprite.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
 	sprite.setTexture(bmp.getTexture2D());
 
 	Sprite sprite2;
-	sprite2.setPosition(200, 400);
-	sprite2.setSize(300, 300);
+	sprite2.setPosition(100, 150);
+	sprite2.setSize(100, 100);
 	sprite2.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
 	sprite2.setColor(Color(0, 200, 200, 255));
 	sprite2.setTexture(bmp.getTexture2D());
@@ -77,8 +80,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		{
 			static const float camZoomSpeed = 0.015f;
 			static const float camMoveSpeed = 6.000f;
-			static const float camRotSpeed  = 1.000f;
-			
+			static const float camRotSpeed = 1.000f;
+
 #if _DEBUG
 			auto t1 = std::chrono::high_resolution_clock::now();
 #endif
@@ -106,7 +109,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			if (window.isKeyPressed(Key::T))
 				camera.setAngle(camera.getAngle() - camRotSpeed);
-			
+
 			if (camera.getViewportWidth() != (float)window.getSize().x
 				|| camera.getViewportHeight() != (float)window.getSize().y)
 			{
@@ -116,6 +119,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			camera.update();
+			shadowMap.Update(&camera);
 
 			POINT mp = window.getMousePosition();
 			DirectX::XMFLOAT4 mouse((float)mp.x, (float)mp.y, 0.0f, 1.0f);
@@ -134,10 +138,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			window.clear(Color(255, 0, 0, 255));
 
 			batch.begin(window.getRenderTarget(), camera);
-			batch.draw(sprite);
 			batch.draw(sprite2);
-			batch.draw(sprite3);
-			batch.draw(text, atlas);
+			batch.draw(shadowMap.getShadowSprite());
 			batch.end();
 
 			primBatch.begin(window.getRenderTarget(), camera, PrimitiveTopology_TriangleList);
