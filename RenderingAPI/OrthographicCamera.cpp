@@ -22,25 +22,24 @@ OrthographicCamera::~OrthographicCamera()
 
 void OrthographicCamera::update()
 {
-	projection = (viewportWidth == 0 || viewportHeight == 0) ?
-		XMMatrixIdentity() : XMMatrixOrthographicOffCenterLH(0.0f, viewportWidth, viewportHeight, 0.0f, 0.0f, 1.0f);
-
 	float halfVpWidth  = viewportWidth  / 2.0f;
 	float halfVpHeight = viewportHeight / 2.0f;
 
-	float originX = x;
-	float originY = y;
+	float originX = x + halfVpWidth;
+	float originY = y + halfVpHeight;
 
 	float zoomOriginX = halfVpWidth;
 	float zoomOriginY = halfVpHeight;
 
 	float rad  = XMConvertToRadians(angle);
 	float zoom = this->zoom < 0 ? 0 : this->zoom;
+
+	projection = (viewportWidth == 0 || viewportHeight == 0) ?
+		XMMatrixIdentity() : XMMatrixOrthographicOffCenterLH(zoom * -viewportWidth / 2.0f, zoom * viewportWidth / 2.0f, zoom * viewportHeight / 2.0f, zoom * -viewportHeight / 2.0f, 0.0f, 1.0f);
 	
-	view = XMMatrixRotationZ(rad) * 
-		   XMMatrixTranslation(-originX, -originY, 0.0f) *
-		   XMMatrixScaling(zoom, zoom, 1.0f) *
-		   XMMatrixTranslation(zoomOriginX, zoomOriginY, 0.0f);
+	view = XMMatrixTranslation(-halfVpWidth, -halfVpHeight, 0.0f) *
+		   XMMatrixRotationZ(rad) *
+		   XMMatrixTranslation(-x + halfVpWidth, -y + halfVpHeight, 0.0f);
 
 	combined    = view * projection;
 	invCombined = XMMatrixInverse(nullptr, combined);
