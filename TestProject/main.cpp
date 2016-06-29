@@ -63,7 +63,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	text.setColor(Color(0, 0, 0, 255));
 
 	OrthographicCamera camera((float)window.getSize().x, (float)window.getSize().y, false);
-	camera.setPosition((float)window.getSize().x / -2.0f, (float)window.getSize().y / -2.0f);
+	camera.setPosition((float)window.getSize().x / 2.0f, (float)window.getSize().y / 2.0f);
 
 	PrimitiveBatch primBatch(context);
 	SpriteBatch batch(context);
@@ -119,7 +119,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			camera.update();
-			shadowMap.Update(&camera);
+			shadowMap.update(window, camera);
 
 			POINT mp = window.getMousePosition();
 			DirectX::XMFLOAT4 mouse((float)mp.x, (float)mp.y, 0.0f, 1.0f);
@@ -138,7 +138,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			window.clear(Color(255, 0, 0, 255));
 
 			batch.begin(window.getRenderTarget(), camera);
-			batch.draw(sprite2);
+			batch.draw(sprite);
 			batch.draw(shadowMap.getShadowSprite());
 			batch.end();
 

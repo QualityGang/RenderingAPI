@@ -12,14 +12,14 @@ public:
 	DLL_REN_API ShadowMap(GraphicsContext *context, uint32_t width, uint32_t height);
 	DLL_REN_API ~ShadowMap();
 
-	DLL_REN_API void Update(OrthographicCamera *camera);
+	DLL_REN_API void update(const Window &window, const OrthographicCamera &camera);
 
-	DLL_REN_API Sprite getShadowSprite() const;
-	DLL_REN_API RenderTexture getRenderTexture() const;
+	const Sprite& getShadowSprite()  const { return shadowSprite;                 }
+	hTexture2D    getTexture2D()     const { return renderTexture.getTexture2D(); }
 private:
 	GraphicsContext *context;
 
-	Sprite shadowSprite;
+	Sprite        shadowSprite;
 	RenderTexture renderTexture;
 };
 

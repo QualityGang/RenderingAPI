@@ -18,6 +18,8 @@ public:
 	float getViewportWidth()  const { return viewportWidth;  }
 	float getViewportHeight() const { return viewportHeight; }
 
+	DLL_REN_API virtual const DirectX::XMMATRIX& getView() const = 0;
+	DLL_REN_API virtual const DirectX::XMMATRIX& getProjection() const = 0;
 	DLL_REN_API virtual const DirectX::XMMATRIX& getCombinedMatrix() const = 0;
 	DLL_REN_API virtual const DirectX::XMMATRIX& getInvCombinedMatrix() const = 0;
 protected:

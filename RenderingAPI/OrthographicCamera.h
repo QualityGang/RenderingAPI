@@ -25,6 +25,8 @@ public:
 	float getZoom()  const { return zoom;  }
 	float getAngle() const { return angle; }
 	
+	const DirectX::XMMATRIX& getView()              const override { return view;        }
+	const DirectX::XMMATRIX& getProjection()        const override { return projection;  }
 	const DirectX::XMMATRIX& getCombinedMatrix()    const override { return combined;    }
 	const DirectX::XMMATRIX& getInvCombinedMatrix() const override { return invCombined; }
 private:
@@ -33,6 +35,9 @@ private:
 	float angle = 0.0f;
 	float zoom  = 1.0f;
 
-	DirectX::XMMATRIX combined, invCombined;
+	DirectX::XMMATRIX view        = DirectX::XMMatrixIdentity();
+	DirectX::XMMATRIX projection  = DirectX::XMMatrixIdentity();
+	DirectX::XMMATRIX combined    = DirectX::XMMatrixIdentity();
+	DirectX::XMMATRIX invCombined = DirectX::XMMatrixIdentity();
 };
 

@@ -14,20 +14,29 @@ ShadowMap::ShadowMap(GraphicsContext *context, uint32_t width, uint32_t height) 
 }
 
 ShadowMap::~ShadowMap()
-{}
-
-void ShadowMap::Update(OrthographicCamera* camera)
 {
-	shadowSprite.setPosition(camera->getX() + camera->getViewportWidth() / 2, camera->getY() + camera->getViewportHeight() / 2);
-	shadowSprite.setAngle(camera->getAngle());
 }
-
-Sprite ShadowMap::getShadowSprite() const
+#include <string>
+void ShadowMap::update(const Window &window, const OrthographicCamera &camera)
 {
-	return shadowSprite;
-}
+	float left = 0;
+	float top = 0;
+	float right = window.getSize().x;
+	float bottom = window.getSize().y;
 
-RenderTexture ShadowMap::getRenderTexture() const
-{
-	return renderTexture;
+	DirectX::XMFLOAT4 leftTop(left, top, 0.0f, 1.0f);
+	camera.unproject(window, leftTop);
+
+	left = leftTop.x;
+	top = leftTop.y;
+
+	DirectX::XMFLOAT4 rightBottom(right, bottom, 0.0f, 1.0f);
+	camera.unproject(window, rightBottom);
+
+	right = rightBottom.x;
+	bottom = rightBottom.y;
+
+	shadowSprite.setPosition(left, top);
+	shadowSprite.setSize(right - left, bottom - top);
+	//shadowSprite.setAngle(camera.getAngle());
 }
