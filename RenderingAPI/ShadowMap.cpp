@@ -18,7 +18,10 @@ ShadowMap::~ShadowMap()
 
 void ShadowMap::Update(OrthographicCamera* camera)
 {
-	shadowSprite.setPosition(camera->getX() + camera->getViewportWidth() / 2, camera->getY() + camera->getViewportHeight() / 2);
+	float width = camera->getViewportWidth() / camera->getZoom();
+	float height = camera->getViewportHeight() / camera->getZoom();
+	shadowSprite.setSize(width, height);
+	shadowSprite.setPosition(camera->getX() + width / 2, camera->getY() + height / 2);
 	shadowSprite.setAngle(camera->getAngle());
 }
 
