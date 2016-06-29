@@ -2,8 +2,9 @@
 
 #include "GraphicsContext.h"
 #include "Bitmap.h"
+#include "NonCopyable.h"
 
-class RenderTexture
+class RenderTexture : public NonCopyable
 {
 public:
 	DLL_REN_API RenderTexture(GraphicsContext *context, uint32_t width, uint32_t height);
