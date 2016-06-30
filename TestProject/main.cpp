@@ -140,11 +140,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			batch.begin(window.getRenderTarget(), camera);
 			batch.draw(sprite);
-			//batch.draw(shadowMap.getShadowSprite());
+			batch.draw(shadowMap.getShadowSprite());
 			batch.end();
 
 			primBatch.begin(window.getRenderTarget(), camera, PrimitiveTopology_TriangleList);
-			//primBatch.drawRect(FloatRect(-400, -150, 300, 300), Color(0, 0, 255, 255));
+			primBatch.drawRect(FloatRect(-400, -150, 300, 300), Color(0, 0, 255, 255));
 			primBatch.end();
 
 			window.swapBuffers();
