@@ -124,7 +124,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			POINT mp = window.getMousePosition();
 			DirectX::XMFLOAT4 mouse((float)mp.x, (float)mp.y, 0.0f, 1.0f);
-			camera.unproject(window, mouse);
+			camera.unproject(window, &mouse);
 
 			if (mouse.x > sprite.getX() && mouse.x < sprite.getX() + sprite.getWidth()
 				&& mouse.y > sprite.getY() && mouse.y < sprite.getY() + sprite.getHeight())

@@ -16,8 +16,8 @@ ShadowMap::ShadowMap(GraphicsContext *context, uint32_t width, uint32_t height) 
 ShadowMap::~ShadowMap()
 {}
 
-#include <string>r
-void ShadowMap::update(const Window &window, OrthographicCamera &camera)
+#include <string>
+void ShadowMap::update(const Window &window,  OrthographicCamera &camera)
 {
 	float left = 0;
 	float top = 0;
@@ -29,13 +29,13 @@ void ShadowMap::update(const Window &window, OrthographicCamera &camera)
 	camera.update();
 
 	DirectX::XMFLOAT4 leftTop(left, top, 0.0f, 1.0f);
-	camera.unproject(window, leftTop);
+	camera.unproject(window, &leftTop);
 
 	left = leftTop.x;
 	top = leftTop.y;
 
 	DirectX::XMFLOAT4 rightBottom(right, bottom, 0.0f, 1.0f);
-	camera.unproject(window, rightBottom);
+	camera.unproject(window, &rightBottom);
 
 	right = rightBottom.x;
 	bottom = rightBottom.y;

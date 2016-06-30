@@ -12,8 +12,10 @@ public:
 	DLL_REN_API Camera(float viewportWidth, float viewportHeight);
 	DLL_REN_API ~Camera();
 
-	DLL_REN_API void project(DirectX::XMFLOAT4 &vec) const;
-	DLL_REN_API void unproject(const Window &window, DirectX::XMFLOAT4 &vec) const;
+	DLL_REN_API void unproject(const Window &window, float viewportX, float viewportY, float viewportWidth, float viewportHeight, DirectX::XMFLOAT4 *screenCoords) const;
+	DLL_REN_API void unproject(const Window &window, DirectX::XMFLOAT4 *screenCoords) const;
+	DLL_REN_API void project(float viewportX, float viewportY, float viewportWidth, float viewportHeight, DirectX::XMFLOAT4 *worldCoords) const;
+	DLL_REN_API void project(const Window &window, DirectX::XMFLOAT4 *worldCoords) const;
 
 	float getViewportWidth()  const { return viewportWidth;  }
 	float getViewportHeight() const { return viewportHeight; }
