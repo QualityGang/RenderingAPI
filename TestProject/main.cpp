@@ -33,7 +33,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShadowMap shadowMap(context, window.getSize().x, window.getSize().x);
 
 	Sprite sprite;
-	sprite.setSize(300, 300);
+	sprite.setSize(200, 200);
+	sprite.setPosition(300,200);
 	sprite.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
 	sprite.setTexture(bmp.getTexture2D());
 
@@ -119,7 +120,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			camera.update();
-			shadowMap.update(window, camera);
+			shadowMap.update(window, camera);				 //s
 
 			POINT mp = window.getMousePosition();
 			DirectX::XMFLOAT4 mouse((float)mp.x, (float)mp.y, 0.0f, 1.0f);
@@ -139,11 +140,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			batch.begin(window.getRenderTarget(), camera);
 			batch.draw(sprite);
-			batch.draw(shadowMap.getShadowSprite());
+			//batch.draw(shadowMap.getShadowSprite());
 			batch.end();
 
 			primBatch.begin(window.getRenderTarget(), camera, PrimitiveTopology_TriangleList);
-			primBatch.drawRect(FloatRect(-400, -150, 300, 300), Color(0, 0, 255, 255));
+			//primBatch.drawRect(FloatRect(-400, -150, 300, 300), Color(0, 0, 255, 255));
 			primBatch.end();
 
 			window.swapBuffers();

@@ -14,11 +14,8 @@ ShadowMap::ShadowMap(GraphicsContext *context, uint32_t width, uint32_t height) 
 }
 
 ShadowMap::~ShadowMap()
-{
-	shadowSprite.setPosition(camera->getX() + camera->getViewportWidth() / 2, camera->getY() + camera->getViewportHeight() / 2);
-	shadowSprite.setAngle(camera->getAngle());
-}
-#include <string>
+{}
+
 void ShadowMap::update(const Window &window, const OrthographicCamera &camera)
 {
 	float left = 0;
