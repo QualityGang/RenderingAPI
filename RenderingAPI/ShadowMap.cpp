@@ -24,10 +24,6 @@ void ShadowMap::update(const Window &window,  OrthographicCamera &camera)
 	float right = (float)window.getSize().x;
 	float bottom = (float)window.getSize().y;
 
-	float deg = camera.getAngle();
-	camera.setAngle(0);
-	camera.update();
-
 	DirectX::XMFLOAT4 leftTop(left, top, 0.0f, 1.0f);
 	camera.unproject(window, &leftTop);
 
@@ -43,10 +39,9 @@ void ShadowMap::update(const Window &window,  OrthographicCamera &camera)
 	float width = right - left;
 	float height = bottom - top;
 
-	shadowSprite.setPosition(left, top);
-	shadowSprite.setSize(right - left, bottom - top);
-	shadowSprite.setAngle(deg);
-
-	camera.setAngle(deg);
-	camera.update();
+	shadowSprite.setPosition(camera.getX(), camera.getY());
+	shadowSprite.setRotationAnchor(0.5, 0.5);
+	shadowSprite.setPositionAnchor(0.5, 0.5);
+ 	shadowSprite.setSize(camera.getViewportWidth() * camera.getZoom(), camera.getViewportHeight() * camera.getZoom());
+	shadowSprite.setAngle(camera.getAngle());
 }
