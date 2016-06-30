@@ -264,9 +264,12 @@ uint32_t SpriteBatch::getBatchSize(uint32_t startIndex, uint32_t endIndex) const
 
 void SpriteBatch::transformVertices(const Sprite &sprite, SpriteVertex *v, uint32_t count) const
 {
-	XMVECTOR scaling = XMVectorSet(sprite.getWidth(), sprite.getHeight(), 1.0f, 1.0f);
-	XMVECTOR origin = XMVectorSet(sprite.getWidth() / 2.0f, sprite.getHeight() / 2.0f, 0.0f, 0.0f);
-	XMVECTOR translation = XMVectorSet(sprite.getX(), sprite.getY(), sprite.getDepth(), 0.0f);
+	float x = sprite.getX() - sprite.getPositionAnchorX() * sprite.getWidth();
+	float y = sprite.getY() - sprite.getPositionAnchorY() * sprite.getHeight();
+
+	XMVECTOR scaling     = XMVectorSet(sprite.getWidth(), sprite.getHeight(), 1.0f, 1.0f);
+	XMVECTOR origin      = XMVectorSet(sprite.getWidth() * sprite.getRotationAnchorX(), sprite.getHeight() * sprite.getRotationAnchorY(), 0.0f, 0.0f);
+	XMVECTOR translation = XMVectorSet(x, y, sprite.getDepth(), 0.0f);
 
 	XMMATRIX worldMatrix = XMMatrixAffineTransformation2D(scaling, origin, XMConvertToRadians(-sprite.getAngle()), translation);
 

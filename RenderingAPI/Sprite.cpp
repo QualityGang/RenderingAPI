@@ -50,6 +50,18 @@ void Sprite::setEffect(SpriteEffect effect)
 	this->effect = effect;
 }
 
+void Sprite::setPositionAnchor(float anchorX, float anchorY)
+{
+	this->posAnchor.x = anchorX;
+	this->posAnchor.y = anchorY;
+}
+
+void Sprite::setRotationAnchor(float anchorX, float anchorY)
+{
+	this->rotAnchor.x = anchorX;
+	this->rotAnchor.y = anchorY;
+}
+
 float Sprite::getX() const
 {
 	return dst.x;
@@ -100,3 +112,22 @@ SpriteEffect Sprite::getEffect() const
 	return effect;
 }
 
+float Sprite::getPositionAnchorX() const
+{
+	return posAnchor.x;
+}
+
+float Sprite::getPositionAnchorY() const
+{
+	return posAnchor.y;
+}
+
+float Sprite::getRotationAnchorX() const
+{
+	return rotAnchor.x;
+}
+
+float Sprite::getRotationAnchorY() const
+{
+	return rotAnchor.y;
+}

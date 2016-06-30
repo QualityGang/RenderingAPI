@@ -33,8 +33,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShadowMap shadowMap(context, window.getSize().x, window.getSize().x);
 
 	Sprite sprite;
+	sprite.setPositionAnchor(0.5f, 0.5f);
+	sprite.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 	sprite.setSize(200, 200);
-	sprite.setPosition(300,200);
 	sprite.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
 	sprite.setTexture(bmp.getTexture2D());
 
@@ -114,9 +115,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			if (camera.getViewportWidth() != (float)window.getSize().x
 				|| camera.getViewportHeight() != (float)window.getSize().y)
 			{
-				camera.setPosition(camera.getX() + (float)camera.getViewportWidth() / 2.0f, camera.getY() + (float)camera.getViewportHeight() / 2.0f);
+				//camera.setPosition(camera.getX() + (float)camera.getViewportWidth() / 2.0f, camera.getY() + (float)camera.getViewportHeight() / 2.0f);
 				camera.setViewport((float)window.getSize().x, (float)window.getSize().y);
-				camera.setPosition(camera.getX() - (float)window.getSize().x / 2.0f, camera.getY() - (float)window.getSize().y / 2.0f);
+				//camera.setPosition(camera.getX() - (float)window.getSize().x / 2.0f, camera.getY() - (float)window.getSize().y / 2.0f);
 			}
 
 			camera.update();

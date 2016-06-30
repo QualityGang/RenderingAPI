@@ -1,5 +1,7 @@
 #pragma once
 
+#include <DirectXMath.h>
+
 #include "GraphicsContext.h"
 #include "Rect.h"
 #include "SpriteEffect.h"
@@ -18,6 +20,8 @@ public:
 	DLL_REN_API void setSrcRect(const FloatRect &src);
 	DLL_REN_API void setTexture(hTexture2D texture);
 	DLL_REN_API void setEffect(SpriteEffect effect);
+	DLL_REN_API void setPositionAnchor(float anchorX, float anchorY);
+	DLL_REN_API void setRotationAnchor(float anchorX, float anchorY);
 	 
 	DLL_REN_API float getX() const;
 	DLL_REN_API float getY() const;
@@ -29,12 +33,18 @@ public:
 	DLL_REN_API hTexture2D getTexture() const;
 	DLL_REN_API const FloatRect getSrcRect() const;
 	DLL_REN_API SpriteEffect getEffect() const;
+	DLL_REN_API float getPositionAnchorX() const;
+	DLL_REN_API float getPositionAnchorY() const;
+	DLL_REN_API float getRotationAnchorX() const;
+	DLL_REN_API float getRotationAnchorY() const;
 private:
 	FloatRect src;
 	FloatRect dst;
-	float degrees       = 0;
-	float depth         = 0;
-	SpriteEffect effect = SpriteEffect_None;
+	DirectX::XMFLOAT2 posAnchor = DirectX::XMFLOAT2(0.0f, 0.0f);
+	DirectX::XMFLOAT2 rotAnchor = DirectX::XMFLOAT2(0.5f, 0.5f);
+	float degrees				= 0;
+	float depth					= 0;
+	SpriteEffect effect			= SpriteEffect_None;
+	hTexture2D texture			= nullptr;
 	Color color;
-	hTexture2D texture  = nullptr;
 };

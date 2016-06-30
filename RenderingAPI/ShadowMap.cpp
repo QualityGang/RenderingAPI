@@ -21,8 +21,8 @@ void ShadowMap::update(const Window &window,  OrthographicCamera &camera)
 {
 	float left = 0;
 	float top = 0;
-	float right = window.getSize().x;
-	float bottom = window.getSize().y;
+	float right = (float)window.getSize().x;
+	float bottom = (float)window.getSize().y;
 
 	float deg = camera.getAngle();
 	camera.setAngle(0);
