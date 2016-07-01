@@ -8,6 +8,7 @@ public:
 	DLL_REN_API explicit Bitmap(GraphicsContext *context);
 	DLL_REN_API Bitmap(GraphicsContext *context, const char *fileName);
 	DLL_REN_API Bitmap(GraphicsContext *context, uint32_t width, uint32_t height, const uint8_t *pixels = nullptr);
+	DLL_REN_API Bitmap(GraphicsContext *context, hTexture2D texture);
 	DLL_REN_API ~Bitmap();
 	
 	DLL_REN_API Bitmap(const Bitmap &other);
@@ -18,6 +19,9 @@ public:
 
 	DLL_REN_API void create(const char *fileName);
 	DLL_REN_API void create(uint32_t width, uint32_t height, const uint8_t *pixels = nullptr);
+	DLL_REN_API void create(hTexture2D texture);
+
+	DLL_REN_API bool save(const char *fileName) const;
 	
 	DLL_REN_API void setPixel(uint32_t index, const Color &color);
 	DLL_REN_API void setPixel(uint32_t x, uint32_t y, const Color &color);
@@ -38,5 +42,11 @@ private:
 	mutable bool dirty = true;
 
 	mutable hTexture2D texture;
-};
 
+
+	static struct _StaticInit
+	{
+		_StaticInit::_StaticInit();
+		_StaticInit::~_StaticInit();
+	} __static_init;
+};

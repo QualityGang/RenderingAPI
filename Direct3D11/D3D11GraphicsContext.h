@@ -84,6 +84,10 @@ public:
 	DLL_D3D11_API void mapTexture2D(hTexture2D texture, MapType type, MapData *data) const override;
 	DLL_D3D11_API void unmapTexture2D(hTexture2D texture) const override;
 	
+	// resource manipulation
+	DLL_D3D11_API void copyBuffer(hBuffer src, hBuffer dst) const override;
+	DLL_D3D11_API void copyTexture2D(hTexture2D src, hTexture2D dst) const override;
+
 	// render target
 	DLL_D3D11_API hRenderTarget createRenderTarget(const RenderTarget &renderTarget) const override;
 	DLL_D3D11_API void releaseRenderTarget(hRenderTarget renderTarget) const override;

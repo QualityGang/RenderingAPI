@@ -5,6 +5,8 @@
 
 #include "Throw.h"
 
+Bitmap::_StaticInit Bitmap::__static_init;
+
 Bitmap::Bitmap(GraphicsContext *context)
 	: context(context)
 {
@@ -20,6 +22,12 @@ Bitmap::Bitmap(GraphicsContext *context, const char *fileName)
 	: context(context)
 {
 	create(fileName);
+}
+
+Bitmap::Bitmap(GraphicsContext *context, hTexture2D texture)
+	: context(context)
+{
+	create(texture);
 }
 
 Bitmap::~Bitmap()
@@ -82,21 +90,18 @@ Bitmap& Bitmap::operator=(Bitmap &&other)
 	return *this;
 }
 
+Bitmap::_StaticInit::_StaticInit()
+{
+	FreeImage_Initialise();
+}
+
+Bitmap::_StaticInit::~_StaticInit()
+{
+	FreeImage_DeInitialise();
+}
+
 void Bitmap::create(const char *fileName)
 {
-	static struct _StaticInit
-	{
-		_StaticInit::_StaticInit()
-		{
-			FreeImage_Initialise();
-		}
-
-		_StaticInit::~_StaticInit()
-		{
-			FreeImage_DeInitialise();
-		}
-	} __static_init;
-
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(fileName);
 
 	if (format == FIF_UNKNOWN)
@@ -156,6 +161,65 @@ void Bitmap::create(uint32_t width, uint32_t height, const uint8_t *pixels)
 		memcpy(buffer, pixels, size);
 	else
 		memset(buffer, 0, size);
+}
+
+void Bitmap::create(hTexture2D texture)
+{
+	TextureSize texSize;
+	context->getTexture2DSize(texture, &texSize);
+
+	this->width  = texSize.width;
+	this->height = texSize.height;
+
+	uint32_t size = width * height * 4;
+	buffer = new uint8_t[size];
+
+	hTexture2D tmp = context->createTexture2D(width, height, PixelFormat_RGBA8, 1, 1,
+		TextureFlag_None, AccessFlag_Read | AccessFlag_Write, nullptr, 0);
+
+	context->copyTexture2D(texture, tmp);
+
+	MapData mapData;
+	context->mapTexture2D(tmp, MapType_Read, &mapData);
+
+	uint8_t *data   = (uint8_t*)mapData.mem;
+	uint8_t *texBuf = this->buffer;
+
+	for (uint32_t i = 0; i < height; i++)
+	{
+		memcpy(texBuf, data, width * 4);
+		data += mapData.rowPitch;
+		texBuf += width * 4;
+	}
+
+	context->unmapTexture2D(tmp);
+	context->releaseTexture2D(tmp);
+}
+
+bool Bitmap::save(const char *fileName) const
+{
+	std::string fileNameStr = fileName;
+
+	if (fileNameStr.substr(fileNameStr.length() - 4, 4) != ".png")
+		fileNameStr += ".png";
+
+	uint32_t size = width * height * 4;
+	uint8_t *bgraBuffer = new uint8_t[size];
+
+	// RGBA to BGRA
+	for (uint32_t i = 0; i < width * height * 4; i += 4)
+	{
+		bgraBuffer[i + 0] = buffer[i + 2];
+		bgraBuffer[i + 1] = buffer[i + 1];
+		bgraBuffer[i + 2] = buffer[i + 0];
+		bgraBuffer[i + 3] = buffer[i + 3];
+	}
+
+	FIBITMAP *image = FreeImage_ConvertFromRawBits(bgraBuffer, width, height, width * 4, 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK, true);
+	bool result = FreeImage_Save(FIF_PNG, image, fileNameStr.c_str(), 0) > 0;
+	FreeImage_Unload(image);
+	delete[] bgraBuffer;
+	return result;
 }
 
 void Bitmap::setPixel(uint32_t index, const Color &color)

@@ -28,7 +28,6 @@
 //  - 1D/2D textures
 //  - indirect drawing
 //  - remove GL/D3D inconsistencies
-//  - resource manipulation
 
 class GraphicsContext
 {
@@ -98,6 +97,10 @@ public:
 
 	virtual void mapTexture2D(hTexture2D texture, MapType type, MapData *data) const = 0;
 	virtual void unmapTexture2D(hTexture2D texture) const = 0;
+
+	// resource manipulation
+	virtual void copyBuffer(hBuffer src, hBuffer dst) const = 0;
+	virtual void copyTexture2D(hTexture2D src, hTexture2D dst) const = 0;
 
 	// render target
 	virtual hRenderTarget createRenderTarget(const RenderTarget &renderTarget) const = 0;

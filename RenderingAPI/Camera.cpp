@@ -36,7 +36,7 @@ void Camera::unproject(const Window &window, float viewportX, float viewportY, f
 
 void Camera::unproject(const Window &window, XMFLOAT4 *screenCoords) const
 {
-	unproject(window, 0.0f, 0.0f, window.getSize().x, window.getSize().y, screenCoords);
+	unproject(window, 0.0f, 0.0f, (float)window.getSize().x, (float)window.getSize().y, screenCoords);
 }
 
 void Camera::project(float viewportX, float viewportY, float viewportWidth, float viewportHeight, XMFLOAT4 *worldCoords) const
@@ -57,5 +57,5 @@ void Camera::project(float viewportX, float viewportY, float viewportWidth, floa
 
 void Camera::project(const Window &window, XMFLOAT4 *worldCoords) const
 {
-	project(0.0f, 0.0f, window.getSize().x, window.getSize().y, worldCoords);
+	project(0.0f, 0.0f, (float)window.getSize().x, (float)window.getSize().y, worldCoords);
 }

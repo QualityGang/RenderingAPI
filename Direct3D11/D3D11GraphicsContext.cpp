@@ -11,9 +11,9 @@
 D3D11GraphicsContext::D3D11GraphicsContext()
 {
 	UINT flags = 0;
-//#if _DEBUG
-//	flags = D3D11_CREATE_DEVICE_DEBUG;
-//#endif
+#if _DEBUG
+	flags = D3D11_CREATE_DEVICE_DEBUG;
+#endif
 
 	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
 
@@ -509,6 +509,28 @@ void D3D11GraphicsContext::mapTexture2D(hTexture2D texture, MapType type, MapDat
 void D3D11GraphicsContext::unmapTexture2D(hTexture2D texture) const
 {
 	immContext->Unmap(texture.as<D3D11Resource>()->resource, 0);
+}
+
+void D3D11GraphicsContext::copyBuffer(hBuffer src, hBuffer dst) const
+{
+	if (src != dst)
+	{
+		ID3D11Buffer *srcBuffer = src.as<ID3D11Buffer>();
+		ID3D11Buffer *dstBuffer = dst.as<ID3D11Buffer>();
+
+		immContext->CopyResource(dstBuffer, srcBuffer);
+	}
+}
+
+void D3D11GraphicsContext::copyTexture2D(hTexture2D src, hTexture2D dst) const
+{
+	if (src != dst)
+	{
+		ID3D11Resource *srcResource = src.as<D3D11Resource>()->resource;
+		ID3D11Resource *dstResource = dst.as<D3D11Resource>()->resource;
+
+		immContext->CopyResource(dstResource, srcResource);
+	}
 }
 
 hRenderTarget D3D11GraphicsContext::createRenderTarget(const RenderTarget &renderTarget) const
