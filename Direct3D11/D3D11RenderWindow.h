@@ -35,6 +35,7 @@ private:
 	const D3D11GraphicsContext *context;
 	IDXGISwapChain *swapChain;
 	hRenderTarget renderTarget;
+	uint32_t numSamples;
 	bool vsync;
 };
 

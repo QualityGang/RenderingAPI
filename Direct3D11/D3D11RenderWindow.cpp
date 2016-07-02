@@ -15,7 +15,7 @@ D3D11RenderWindow::D3D11RenderWindow(
 	PixelFormat					bufferFormat,
 	uint32_t					numSamples,
 	bool						vsync
-) : context(context), vsync(vsync)
+) : context(context), numSamples(numSamples), vsync(vsync)
 {
 	DXGI_SWAP_CHAIN_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -98,7 +98,7 @@ void D3D11RenderWindow::initRenderTarget(uint32_t width, uint32_t height)
 	hTexture2D backBuffer = getBackBuffer();
 	hTexture2D depthStencilBuffer = context->createTexture2D(
 		width, height, PixelFormat_D24S8,
-		1, 1, TextureFlag_DepthStencil, AccessFlag_Default, nullptr, 0
+		1, numSamples, TextureFlag_DepthStencil, AccessFlag_Default, nullptr, 0
 	);
 
 	RenderTarget rtDesc;

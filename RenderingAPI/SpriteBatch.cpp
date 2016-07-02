@@ -75,8 +75,8 @@ SpriteBatch::~SpriteBatch()
 
 void SpriteBatch::begin(
 	hRenderTarget      renderTarget,
-	const Camera	   &camera,
 	SpriteSortMode	   sortMode,
+	const Camera	   *camera,
 	hVertexShader      customVertexShader,
 	hPixelShader       customPixelShader 
 )
@@ -89,9 +89,11 @@ void SpriteBatch::begin(
 
 	beginEndPair = true;
 
+	context->getRenderTargetSize(renderTarget, 0, &sceneSize);
+
 	this->renderTarget       = renderTarget;
-	this->camera             = &camera;
 	this->sortMode           = sortMode;
+	this->projection		 = camera ? camera->getCombinedMatrix() : XMMatrixOrthographicOffCenterLH(0.0f, (float)sceneSize.width, (float)sceneSize.height, 0.0f, 0.0f, 1.0f);
 	this->customVertexShader = customVertexShader;
 	this->customPixelShader  = customPixelShader;
 
@@ -182,10 +184,6 @@ void SpriteBatch::prepare() const
 	uint32_t stride = sizeof(SpriteVertex);
 	uint32_t offset = 0;
 
-	TextureSize vpSize;
-	hTexture2D surface = context->getTexture2D(renderTarget, 0);
-	context->getTexture2DSize(surface, &vpSize);
-
 	context->setVertexBuffers(&vertexBuffer, 0, 1, &stride, &offset);
 	context->setIndexBuffer(indexBuffer, 0);
 
@@ -194,10 +192,8 @@ void SpriteBatch::prepare() const
 	context->setVertexFormat(vertexFormat);
 	
 	context->setRenderTarget(renderTarget);
-	context->setViewport((float)vpSize.width, (float)vpSize.height, 0.0f, 1.0f);
+	context->setViewport((float)sceneSize.width, (float)sceneSize.height, 0.0f, 1.0f);
 	context->setPrimitiveTopology(PrimitiveTopology_TriangleList);
-
-	context->releaseTexture2D(surface);
 }
 
 void SpriteBatch::finalize() const
@@ -273,7 +269,7 @@ void SpriteBatch::transformVertices(const Sprite &sprite, SpriteVertex *v, uint3
 
 	XMMATRIX worldMatrix = XMMatrixAffineTransformation2D(scaling, origin, XMConvertToRadians(-sprite.getAngle()), translation);
 
-	XMMATRIX transform = worldMatrix * camera->getCombinedMatrix();
+	XMMATRIX transform = worldMatrix * projection;
 
 	for (uint32_t i = 0; i < count; i++)
 	{

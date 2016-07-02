@@ -151,3 +151,10 @@ void GraphicsContext::dispose()
 	releaseSamplerState(SSAnisotropicWrap);
 	releaseSamplerState(SSAnisotropicClamp);
 }
+
+void GraphicsContext::getRenderTargetSize(hRenderTarget renderTarget, uint32_t slot, TextureSize *texSize) const
+{
+	hTexture2D texture = getTexture2D(renderTarget, slot);
+	getTexture2DSize(texture, texSize);
+	releaseTexture2D(texture);
+}

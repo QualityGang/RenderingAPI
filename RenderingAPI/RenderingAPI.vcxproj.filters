@@ -34,9 +34,6 @@
     <Filter Include="Source\Rendering\Shaders">
       <UniqueIdentifier>{b3d87ad6-a6e9-4d29-ac8f-4f28c2e8e9bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Rendering\Shaders\Header Files">
-      <UniqueIdentifier>{f0e90b0f-39b9-45b6-9c84-a7bb358459e0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapType.h">
@@ -150,12 +147,6 @@
     <ClInclude Include="OrthographicCamera.h">
       <Filter>Source\Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteVS.h">
-      <Filter>Source\Rendering\Shaders\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SpritePS.h">
-      <Filter>Source\Rendering\Shaders\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Source\Window</Filter>
     </ClInclude>
@@ -214,6 +205,12 @@
       <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="ShadowMap.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Bloom.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="BloomSettings.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
@@ -284,6 +281,9 @@
     <ClCompile Include="ShadowMap.cpp">
       <Filter>Source\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Bloom.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="SpriteVS.hlsl">
@@ -296,6 +296,15 @@
       <Filter>Source\Rendering\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PrimitivePS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="BloomCombinePS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="BloomExtractPS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="GaussianBlurPS.hlsl">
       <Filter>Source\Rendering\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -20,8 +20,8 @@ public:
 
 	DLL_REN_API void begin(
 		hRenderTarget      renderTarget,
-		const Camera	   &camera,
 		SpriteSortMode	   sortMode           = SpriteSortMode_Deferred,
+		const Camera	   *camera            = nullptr,
 		hVertexShader      customVertexShader = nullptr,
 		hPixelShader       customPixelShader  = nullptr
 	);
@@ -45,10 +45,12 @@ private:
 	bool            beginEndPair;
 
 	hRenderTarget      renderTarget;
-	const Camera       *camera;
 	SpriteSortMode     sortMode;
+	DirectX::XMMATRIX  projection;
 	hVertexShader      customVertexShader;
 	hPixelShader       customPixelShader;
+
+	TextureSize sceneSize;
 
 	hBuffer         vertexBuffer, indexBuffer;
 	hVertexShader   vertexShader;

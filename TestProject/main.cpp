@@ -13,6 +13,7 @@
 #include <OrthographicCamera.h>
 #include <RenderTexture.h>
 #include <ShadowMap.h>
+#include <Bloom.h>
 
 #include <DirectXMath.h>
 
@@ -28,46 +29,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Window window(context, "Title", 800, 600);
 	//window.setVSyncEnabled(false);
 
-	Bitmap bmp(context, "box.png");
-
-	ShadowMap shadowMap(context, window.getSize().x, window.getSize().x);
+	Bitmap bmp(context, "sunset.png");;
 
 	Sprite sprite;
-	sprite.setPositionAnchor(0.5f, 0.5f);
-	sprite.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
-	sprite.setSize(200, 200);
+	sprite.setSize((float)window.getSize().x, (float)window.getSize().y);
 	sprite.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
 	sprite.setTexture(bmp.getTexture2D());
 
-	Sprite sprite2;
-	sprite2.setPosition(100, 150);
-	sprite2.setSize(100, 100);
-	sprite2.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
-	sprite2.setColor(Color(0, 200, 200, 255));
-	sprite2.setTexture(bmp.getTexture2D());
+	BloomSettings settings;
+	settings.bloomThreshold  = 0.25f;
+	settings.blurAmount      = 4.0f;
+	settings.bloomIntensity  = 2.0f;
+	settings.baseIntensity   = 1.0f;
+	settings.bloomSaturation = 1.5f;
+	settings.baseSaturation  = 1.0f;
 
-	RenderTexture renTex(context, 600, 600);
-	context->clearRenderTarget(renTex.getRenderTarget(), 0, Color(255, 255, 255, 255));
-
-	Sprite sprite3;
-	sprite3.setPosition(600, 100);
-	sprite3.setSize(600, 600);
-	sprite3.setSrcRect(FloatRect(0, 0, (float)600, (float)600));
-	sprite3.setTexture(renTex.getTexture2D());
-
-	Font font("arial.ttf", 48);
-	FontAtlas atlas(context, FA_ALLLOWERCASE FA_ALLUPPERCASE FA_ALLNUMBERS "'!?", font);
-
-	Text text;
-	text.setString("Hey there!\nWhat's up?");
-	text.setPosition(800, 800);
-	text.setLineGap(5);
-	text.setColor(Color(0, 0, 0, 255));
-
-	OrthographicCamera camera((float)window.getSize().x, (float)window.getSize().y, false);
-	camera.setPosition((float)window.getSize().x / 2.0f, (float)window.getSize().y / 2.0f);
-
-	PrimitiveBatch primBatch(context);
+	Bloom bloom(context);
+	bloom.setSettings(settings);
+	bloom.setRenderTarget(window.getRenderTarget());
+	//bloom.setShowFilter(Bloom::PreBloom);
+	
 	SpriteBatch batch(context);
 
 	WndEvent e;
@@ -80,79 +61,32 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		else
 		{
-			static const float camZoomSpeed = 0.015f;
-			static const float camMoveSpeed = 6.000f;
-			static const float camRotSpeed = 1.000f;
-
 #if _DEBUG
 			auto t1 = std::chrono::high_resolution_clock::now();
 #endif
+			static uint32_t prevWidth  = window.getSize().x;
+			static uint32_t prevHeight = window.getSize().y;
 
-			if (window.isKeyPressed(Key::Q))
-				camera.setZoom(camera.getZoom() - camZoomSpeed);
-
-			if (window.isKeyPressed(Key::E))
-				camera.setZoom(camera.getZoom() + camZoomSpeed);
-
-			if (window.isKeyPressed(Key::W))
-				camera.setPosition(camera.getX(), camera.getY() - camMoveSpeed);
-
-			if (window.isKeyPressed(Key::S))
-				camera.setPosition(camera.getX(), camera.getY() + camMoveSpeed);
-
-			if (window.isKeyPressed(Key::A))
-				camera.setPosition(camera.getX() - camMoveSpeed, camera.getY());
-
-			if (window.isKeyPressed(Key::D))
-				camera.setPosition(camera.getX() + camMoveSpeed, camera.getY());
-
-			if (window.isKeyPressed(Key::R))
-				camera.setAngle(camera.getAngle() + camRotSpeed);
-
-			if (window.isKeyPressed(Key::T))
-				camera.setAngle(camera.getAngle() - camRotSpeed);
-
-			if (camera.getViewportWidth() != (float)window.getSize().x
-				|| camera.getViewportHeight() != (float)window.getSize().y)
+			if (prevWidth != window.getSize().x || prevHeight != window.getSize().y)
 			{
-				//camera.setPosition(camera.getX() + (float)camera.getViewportWidth() / 2.0f, camera.getY() + (float)camera.getViewportHeight() / 2.0f);
-				camera.setViewport((float)window.getSize().x, (float)window.getSize().y);
-				//camera.setPosition(camera.getX() - (float)window.getSize().x / 2.0f, camera.getY() - (float)window.getSize().y / 2.0f);
+				prevWidth  = window.getSize().x;
+				prevHeight = window.getSize().y;
+
+				sprite.setSize((float)prevWidth, (float)prevHeight);
+				bloom.setRenderTarget(window.getRenderTarget());
 			}
 
-			camera.update();
-			shadowMap.update(window, camera);				 //s
+			window.clear(Color(0, 0, 0, 255));
 
-			POINT mp = window.getMousePosition();
-			DirectX::XMFLOAT4 mouse((float)mp.x, (float)mp.y, 0.0f, 1.0f);
-			camera.unproject(window, &mouse);
-
-			if (mouse.x > sprite.getX() && mouse.x < sprite.getX() + sprite.getWidth()
-				&& mouse.y > sprite.getY() && mouse.y < sprite.getY() + sprite.getHeight())
-			{
-				sprite.setColor(Color(0, 255, 0, 255));
-			}
-			else
-			{
-				sprite.setColor(Color(255, 255, 255, 255));
-			}
-
-			window.clear(Color(255, 0, 0, 255));
-
-			batch.begin(window.getRenderTarget(), camera);
+			batch.begin(window.getRenderTarget());
 			batch.draw(sprite);
-			batch.draw(shadowMap.getShadowSprite());
 			batch.end();
 
-			primBatch.begin(window.getRenderTarget(), camera, PrimitiveTopology_TriangleList);
-			primBatch.drawRect(FloatRect(-400, -150, 300, 300), Color(0, 0, 255, 255));
-			primBatch.end();
+			bloom.apply(batch);
 
 			window.swapBuffers();
-
 #if _DEBUG
 			auto t2 = std::chrono::high_resolution_clock::now();
-
 			auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
 
 			OutputDebugString(std::to_string(1000.0 / dt).c_str());

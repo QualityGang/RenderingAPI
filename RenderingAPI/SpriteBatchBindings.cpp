@@ -12,7 +12,7 @@ extern "C" DLL_REN_API void SpriteBatch_Release(SpriteBatch *batch)
 
 extern "C" DLL_REN_API void SpriteBatch_Begin(SpriteBatch *batch, void *renderTarget, Camera *camera)
 {
-	batch->begin(hRenderTarget(renderTarget), *camera);
+	batch->begin(hRenderTarget(renderTarget), SpriteSortMode_Deferred, camera);
 }
 
 extern "C" DLL_REN_API void SpriteBatch_End(SpriteBatch *batch)

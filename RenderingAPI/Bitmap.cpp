@@ -102,6 +102,8 @@ Bitmap::_StaticInit::~_StaticInit()
 
 void Bitmap::create(const char *fileName)
 {
+	this->~Bitmap();
+
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(fileName);
 
 	if (format == FIF_UNKNOWN)
@@ -151,6 +153,8 @@ void Bitmap::create(const char *fileName)
 
 void Bitmap::create(uint32_t width, uint32_t height, const uint8_t *pixels)
 {
+	this->~Bitmap();
+
 	this->width  = width;
 	this->height = height;
 
@@ -165,6 +169,8 @@ void Bitmap::create(uint32_t width, uint32_t height, const uint8_t *pixels)
 
 void Bitmap::create(hTexture2D texture)
 {
+	this->~Bitmap();
+
 	TextureSize texSize;
 	context->getTexture2DSize(texture, &texSize);
 

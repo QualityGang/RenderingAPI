@@ -107,6 +107,7 @@ public:
 	virtual void releaseRenderTarget(hRenderTarget renderTarget) const = 0;
 
 	virtual hTexture2D getTexture2D(hRenderTarget renderTarget, uint32_t slot) const = 0;
+	void getRenderTargetSize(hRenderTarget renderTarget, uint32_t slot, TextureSize *texSize) const;
 
 	// render window
 	virtual hRenderWindow createRenderWindow(

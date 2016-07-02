@@ -42,8 +42,8 @@ PrimitiveBatch::~PrimitiveBatch()
 
 void PrimitiveBatch::begin(
 	hRenderTarget     renderTarget,
-	const Camera	  &camera,
 	PrimitiveTopology topology,
+	const Camera	  *camera,
 	hVertexShader     customVertexShader,
 	hPixelShader      customPixelShader)
 {
@@ -70,9 +70,11 @@ void PrimitiveBatch::begin(
 			THROW("PrimitiveTopology is not valid");
 	}
 
+	context->getRenderTargetSize(renderTarget, 0, &sceneSize);
+
 	this->renderTarget = renderTarget;
-	this->camera = &camera;
 	this->topology = topology;
+	this->projection = camera ? camera->getCombinedMatrix() : XMMatrixOrthographicOffCenterLH(0.0f, (float)sceneSize.width, (float)sceneSize.height, 0.0f, 0.0f, 1.0f);
 	this->customVertexShader = customVertexShader;
 	this->customPixelShader = customPixelShader;
 
@@ -155,8 +157,7 @@ void PrimitiveBatch::prepare() const
 	uint32_t offset = 0;
 
 	TextureSize vpSize;
-	hTexture2D surface = context->getTexture2D(renderTarget, 0);
-	context->getTexture2DSize(surface, &vpSize);
+	context->getRenderTargetSize(renderTarget, 0, &vpSize);
 
 	context->setVertexBuffers(&vertexBuffer, 0, 1, &stride, &offset);
 
@@ -167,8 +168,6 @@ void PrimitiveBatch::prepare() const
 	context->setRenderTarget(renderTarget);
 	context->setViewport((float)vpSize.width, (float)vpSize.height, 0.0f, 1.0f);
 	context->setPrimitiveTopology(topology);
-
-	context->releaseTexture2D(surface);
 }
 
 void PrimitiveBatch::drawBatch(uint32_t startIndex, uint32_t count) const
@@ -189,7 +188,7 @@ void PrimitiveBatch::drawBatch(uint32_t startIndex, uint32_t count) const
 
 void PrimitiveBatch::transformVertices(PrimitiveVertex *v, uint32_t count) const
 {
-	XMMATRIX transform = camera->getCombinedMatrix();
+	XMMATRIX transform = projection;
 
 	for (uint32_t i = 0; i < count; i++)
 	{

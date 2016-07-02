@@ -19,10 +19,10 @@ public:
 
 	DLL_REN_API void begin(
 		hRenderTarget     renderTarget,
-		const Camera	  &camera,
 		PrimitiveTopology topology,
+		const Camera	  *camera            = nullptr,
 		hVertexShader     customVertexShader = nullptr,
-		hPixelShader      customPixelShader = nullptr
+		hPixelShader      customPixelShader  = nullptr
 	);
 
 	DLL_REN_API void end();
@@ -45,10 +45,12 @@ private:
 	bool            beginEndPair;
 
 	hRenderTarget     renderTarget;
-	const Camera      *camera;
 	PrimitiveTopology topology;
+	DirectX::XMMATRIX projection;
 	hVertexShader     customVertexShader;
 	hPixelShader      customPixelShader;
+
+	TextureSize sceneSize;
 
 	hBuffer         vertexBuffer;
 	hVertexShader   vertexShader;

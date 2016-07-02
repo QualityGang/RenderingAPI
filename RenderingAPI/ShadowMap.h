@@ -14,8 +14,8 @@ public:
 
 	DLL_REN_API void update(const Window &window, OrthographicCamera &camera);
 
-	Sprite& getShadowSprite()  { return shadowSprite;                 }
-	hTexture2D    getTexture2D()    const { return renderTexture.getTexture2D(); }
+	Sprite& getShadowSprite() { return shadowSprite; }
+	hTexture2D getTexture2D() const { return renderTexture.getTexture2D(); }
 private:
 	GraphicsContext *context;
 
