@@ -12,6 +12,7 @@
 #include "NonCopyable.h"
 #include "DLLExport.h"
 
+ALIGN(16)
 class SpriteBatch : public NonCopyable, public AlignedNew<16>
 {
 public:
