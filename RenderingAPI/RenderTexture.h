@@ -24,4 +24,3 @@ private:
 	hRenderTarget renderTarget;
 	hTexture2D texture;
 };
-

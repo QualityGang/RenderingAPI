@@ -1,6 +1,6 @@
 #include "ShadowMap.h"
 
-ShadowMap::ShadowMap(GraphicsContext* context) : context(context), DistancesRT(context)
+ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) : context(context), DistancesRT(context)
 {
 	//ComputeDistancesPS = context->createPixelShader(g_ShadowEffectPS, sizeof(g_ShadowEffectPS));
 	//ComputeDistancesCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
@@ -26,11 +26,10 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 	{
 		size = rtSize;
 
-		DistancesRT.create(size.width, size.height);
+		DistancesRT.create(size.width, size.height,PixelFormat_RG16F);
 	}
 }
 
-void ShadowMap::draw(SpriteBatch batch)
+void ShadowMap::draw(SpriteBatch &batch)
 {
-
 }

@@ -4,15 +4,16 @@
 #include "RenderTexture.h"
 #include "Sprite.h"
 #include "SpriteBatch.h"
+#include "ShadowMapSize.h"
 
 class ShadowMap : NonCopyable
 {
 public:
-	DLL_REN_API ShadowMap(GraphicsContext *context);
+	DLL_REN_API ShadowMap(GraphicsContext *context,ShadowMapSize size);
 	DLL_REN_API ~ShadowMap();
 
 	DLL_REN_API void setRenderTarget(hRenderTarget renderTarget);
-	DLL_REN_API void draw(SpriteBatch batch);
+	DLL_REN_API void draw(SpriteBatch &batch);
 private:
 	GraphicsContext *context;
 

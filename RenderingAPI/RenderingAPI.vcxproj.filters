@@ -213,6 +213,9 @@
     <ClInclude Include="BloomSettings.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowMapSize.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DynLib.cpp">
@@ -314,9 +317,6 @@
       <Filter>Source\Rendering\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="GaussianBlurPS.hlsl">
-      <Filter>Source\Rendering\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="ComputeDistancesPS.hlsl">
       <Filter>Source\Rendering\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
