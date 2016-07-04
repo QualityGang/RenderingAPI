@@ -10,7 +10,7 @@
 class Bloom : public NonCopyable
 {
 public:
-	DLL_REN_API Bloom(GraphicsContext *context);
+	DLL_REN_API explicit Bloom(GraphicsContext *context);
 	DLL_REN_API ~Bloom();
 
 	enum ShowFilter : int32_t

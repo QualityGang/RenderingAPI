@@ -205,6 +205,8 @@ void Bitmap::create(hTexture2D texture)
 
 	context->unmapTexture2D(tmp);
 	context->releaseTexture2D(tmp);
+
+	memcpy(buffer, texBuf, size);
 }
 
 bool Bitmap::save(const char *fileName) const
