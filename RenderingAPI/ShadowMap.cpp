@@ -1,9 +1,11 @@
 #include "ShadowMap.h"
+#include "ComputeDistancesPS.h"
 
-ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) : context(context), DistancesRT(context)
+ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) : context(context), distancesRT(context), sceneRenderTexture(context)
 {
-	//ComputeDistancesPS = context->createPixelShader(g_ShadowEffectPS, sizeof(g_ShadowEffectPS));
-	//ComputeDistancesCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
+	shadowMapSize = 2 << size;
+	ComputeDistancesPS = context->createPixelShader(g_ComputeDistancesPS, sizeof(g_ComputeDistancesPS));
+	ComputeDistancesCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
 }
 
 ShadowMap::~ShadowMap()
@@ -12,13 +14,18 @@ ShadowMap::~ShadowMap()
 	context->releaseBuffer(ComputeDistancesCB);
 }
 
+#include "Bitmap.h";
+
 void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 {
-	shadowRenderTarget = renderTarget;
+	sceneRenderTarget = renderTarget;
 
-	if (!shadowRenderTarget)
+	distancesRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16F);
+
+	if (!sceneRenderTarget)
 		return;
 
+	// Look up the resolution of our source render target.
 	TextureSize rtSize;
 	context->getRenderTargetSize(renderTarget, 0, &rtSize);
 
@@ -26,10 +33,39 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 	{
 		size = rtSize;
 
-		DistancesRT.create(size.width, size.height,PixelFormat_RG16F);
+		sceneRenderTexture.create(size.width, size.height);
 	}
 }
 
 void ShadowMap::draw(SpriteBatch &batch)
 {
+	if (!sceneRenderTarget)
+		return;
+
+	hTexture2D surface = context->getTexture2D(sceneRenderTarget, 0);
+	context->copyTexture2D(surface, sceneRenderTexture.getTexture2D());
+	context->releaseTexture2D(surface);
+
+	context->setDepthStencilState(context->DSSNone);
+
+	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), ComputeDistancesPS);
+}
+
+void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader) const
+{
+	TextureSize surfSize;
+	context->getRenderTargetSize(renderTarget, 0, &surfSize);
+
+	TextureSize texSize;
+	context->getTexture2DSize(texture, &texSize);
+
+	Sprite sprite;
+	sprite.setPosition(0, 0);
+	sprite.setSize((float)surfSize.width, (float)surfSize.height);
+	sprite.setSrcRect(FloatRect(0, 0, (float)texSize.width, (float)texSize.height));
+	sprite.setTexture(texture);
+
+	batch.begin(renderTarget, SpriteSortMode_Deferred, nullptr, nullptr, ComputeDistancesPS);
+	batch.draw(sprite);
+	batch.end();
 }

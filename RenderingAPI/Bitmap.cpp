@@ -34,9 +34,6 @@ Bitmap::Bitmap(GraphicsContext *context, hTexture2D texture)
 
 Bitmap::~Bitmap()
 {
-	OutputDebugString(std::to_string((int64_t)context).c_str());
-	OutputDebugString("\n");
-
 	delete[] buffer;
 	context->releaseTexture2D(texture);
 }
@@ -205,8 +202,6 @@ void Bitmap::create(hTexture2D texture)
 
 	context->unmapTexture2D(tmp);
 	context->releaseTexture2D(tmp);
-
-	memcpy(buffer, texBuf, size);
 }
 
 bool Bitmap::save(const char *fileName) const

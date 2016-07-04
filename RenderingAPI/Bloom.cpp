@@ -39,7 +39,7 @@ void Bloom::apply(SpriteBatch &batch) const
 {
 	if (!sceneRenderTarget)
 		return;
-	
+
 	context->setDepthStencilState(context->DSSNone);
 
 	// Copy the content of our source render target to our custom buffer.
@@ -121,7 +121,7 @@ void Bloom::setBlurParameters(float dx, float dy) const
 	static const uint32_t SampleCount = 15;
 
 	ALIGN(16)
-	struct FloatA : AlignedNew<16>
+		struct FloatA : AlignedNew<16>
 	{
 		float value;
 
@@ -181,7 +181,7 @@ void Bloom::setBlurParameters(float dx, float dy) const
 	context->mapBuffer(gaussianBlurCB, MapType_Write, &mapData);
 
 	XMFLOAT2A *sampleOffsetsBuffer = (XMFLOAT2A*)mapData.mem;
-	
+
 	for (uint32_t i = 0; i < SampleCount; i++)
 		sampleOffsetsBuffer[i] = sampleOffsets[i];
 
@@ -197,7 +197,7 @@ void Bloom::setBlurParameters(float dx, float dy) const
 float Bloom::computeGaussian(float n) const
 {
 	float theta = settings.blurAmount;
-	
+
 	// sqrt(2 * pi) = 2.50662827463
 	return (float)((1.0 / (2.50662827463 * theta)) * std::exp(-(n * n) / (2.0 * theta * theta)));
 }

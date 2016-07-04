@@ -103,8 +103,8 @@
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
       <ShaderType>Vertex</ShaderType>
-      <VariableName>g_ShadowEffectPS</VariableName>
-      <HeaderFileOutput>ShadowEffectPS.h</HeaderFileOutput>
+      <VariableName>g_ComputeDistancesPS</VariableName>
+      <HeaderFileOutput>ComputeDistancesPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -127,8 +127,8 @@
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
       <ShaderType>Vertex</ShaderType>
-      <VariableName>g_ShadowEffectPS</VariableName>
-      <HeaderFileOutput>ShadowEffectPS.h</HeaderFileOutput>
+      <VariableName>g_ComputeDistancesPS</VariableName>
+      <HeaderFileOutput>ComputeDistancesPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -155,8 +155,8 @@
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
       <ShaderType>Vertex</ShaderType>
-      <VariableName>g_ShadowEffectPS</VariableName>
-      <HeaderFileOutput>ShadowEffectPS.h</HeaderFileOutput>
+      <VariableName>g_ComputeDistancesPS</VariableName>
+      <HeaderFileOutput>ComputeDistancesPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -183,8 +183,8 @@
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
       <ShaderType>Vertex</ShaderType>
-      <VariableName>g_ShadowEffectPS</VariableName>
-      <HeaderFileOutput>ShadowEffectPS.h</HeaderFileOutput>
+      <VariableName>g_ComputeDistancesPS</VariableName>
+      <HeaderFileOutput>ComputeDistancesPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>

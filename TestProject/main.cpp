@@ -44,18 +44,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	sprite2.setTexture(bmp2.getTexture2D());
 
 	BloomSettings settings;
-	settings.bloomThreshold  = 0.25f;
-	settings.blurAmount      = 4.0f;
-	settings.bloomIntensity  = 2.0f;
-	settings.baseIntensity   = 1.0f;
+	settings.bloomThreshold = 0.25f;
+	settings.blurAmount = 4.0f;
+	settings.bloomIntensity = 2.0f;
+	settings.baseIntensity = 1.0f;
 	settings.bloomSaturation = 1.5f;
-	settings.baseSaturation  = 1.0f;
+	settings.baseSaturation = 1.0f;
+
+	ShadowMap shadowMap(context, ShadowMapSize::Size512);
+	shadowMap.setRenderTarget(window.getRenderTarget());
 
 	Bloom bloom(context);
 	bloom.setSettings(settings);
 	bloom.setRenderTarget(window.getRenderTarget());
 	//bloom.setShowFilter(Bloom::BlurredBothWays);
-	
+
 	SpriteBatch batch(context);
 
 	OrthographicCamera camera(window.getSize().x / 2.0f, window.getSize().y / 2.0f, (float)window.getSize().x, (float)window.getSize().y);
@@ -73,15 +76,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #if _DEBUG
 			auto t1 = std::chrono::high_resolution_clock::now();
 #endif
-			static uint32_t prevWidth  = window.getSize().x;
+			static uint32_t prevWidth = window.getSize().x;
 			static uint32_t prevHeight = window.getSize().y;
 
 			if (prevWidth != window.getSize().x || prevHeight != window.getSize().y)
 			{
-				prevWidth  = window.getSize().x;
+				prevWidth = window.getSize().x;
 				prevHeight = window.getSize().y;
 
 				camera.setViewport((float)prevWidth, (float)prevHeight);
+				shadowMap.setRenderTarget(window.getRenderTarget());
 				bloom.setRenderTarget(window.getRenderTarget());
 			}
 
@@ -96,13 +100,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			camera.update();
 
-			window.clear(Color(0, 0, 0, 255));
+			window.clear(Color(0, 150, 0, 255));
 
 			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
 			//batch.draw(sprite);
 			batch.draw(sprite2);
 			batch.end();
 
+			shadowMap.draw(batch);
 			//bloom.apply(batch);
 
 			window.swapBuffers();

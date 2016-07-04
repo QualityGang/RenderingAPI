@@ -9,20 +9,24 @@
 class ShadowMap : NonCopyable
 {
 public:
-	DLL_REN_API ShadowMap(GraphicsContext *context,ShadowMapSize size);
+	DLL_REN_API ShadowMap(GraphicsContext *context, ShadowMapSize size);
 	DLL_REN_API ~ShadowMap();
 
 	DLL_REN_API void setRenderTarget(hRenderTarget renderTarget);
 	DLL_REN_API void draw(SpriteBatch &batch);
+
+	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader) const;
 private:
 	GraphicsContext *context;
+	int shadowMapSize = ShadowMapSize::Default;
 
 	hPixelShader  ComputeDistancesPS;
 	hBuffer       ComputeDistancesCB;
 
-	hRenderTarget shadowRenderTarget;
+	RenderTexture sceneRenderTexture;
+	hRenderTarget sceneRenderTarget;
 	TextureSize   size;
 
-	RenderTexture DistancesRT;
+	RenderTexture distancesRT;
 };
 
