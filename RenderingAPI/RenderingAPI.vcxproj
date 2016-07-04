@@ -102,9 +102,9 @@
     </PostBuildEvent>
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
-      <ShaderType>Pixel</ShaderType>
-      <VariableName>g_ComputeDistancePS</VariableName>
-      <HeaderFileOutput>ComputeDistancePS.h</HeaderFileOutput>
+      <ShaderType>Vertex</ShaderType>
+      <VariableName>g_ShadowEffectPS</VariableName>
+      <HeaderFileOutput>ShadowEffectPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -126,9 +126,9 @@
     </PostBuildEvent>
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
-      <ShaderType>Pixel</ShaderType>
-      <VariableName>g_ComputeDistancePS</VariableName>
-      <HeaderFileOutput>ComputeDistancePS.h</HeaderFileOutput>
+      <ShaderType>Vertex</ShaderType>
+      <VariableName>g_ShadowEffectPS</VariableName>
+      <HeaderFileOutput>ShadowEffectPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -154,9 +154,9 @@
     </PostBuildEvent>
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
-      <ShaderType>Pixel</ShaderType>
-      <VariableName>g_ComputeDistancePS</VariableName>
-      <HeaderFileOutput>ComputeDistancePS.h</HeaderFileOutput>
+      <ShaderType>Vertex</ShaderType>
+      <VariableName>g_ShadowEffectPS</VariableName>
+      <HeaderFileOutput>ShadowEffectPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -182,9 +182,9 @@
     </PostBuildEvent>
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
-      <ShaderType>Pixel</ShaderType>
-      <VariableName>g_ComputeDistancePS</VariableName>
-      <HeaderFileOutput>ComputeDistancePS.h</HeaderFileOutput>
+      <ShaderType>Vertex</ShaderType>
+      <VariableName>g_ShadowEffectPS</VariableName>
+      <HeaderFileOutput>ShadowEffectPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -212,7 +212,6 @@
     <ClInclude Include="PrimitiveBatch.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="ShadowMap.h" />
-    <ClInclude Include="ShadowMapSize.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClCompile Include="BitmapBindings.cpp" />
@@ -306,6 +305,12 @@
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">BloomExtractPS.h</HeaderFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="ComputeDistancesPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
