@@ -3,23 +3,25 @@
 #include "GraphicsDevice.h"
 #include "RenderTexture.h"
 #include "Sprite.h"
-#include "Camera.h"
-#include "OrthographicCamera.h"
+#include "SpriteBatch.h"
 
-class ShadowMap
+class ShadowMap : NonCopyable
 {
 public:
-	DLL_REN_API ShadowMap(GraphicsContext *context, uint32_t width, uint32_t height);
+	DLL_REN_API ShadowMap(GraphicsContext *context);
 	DLL_REN_API ~ShadowMap();
 
-	DLL_REN_API void update(const Window &window, OrthographicCamera &camera);
-
-	Sprite& getShadowSprite() { return shadowSprite; }
-	hTexture2D getTexture2D() const { return renderTexture.getTexture2D(); }
+	DLL_REN_API void setRenderTarget(hRenderTarget renderTarget);
+	DLL_REN_API void draw(SpriteBatch batch);
 private:
 	GraphicsContext *context;
 
-	Sprite        shadowSprite;
-	RenderTexture renderTexture;
+	hPixelShader  ComputeDistancesPS;
+	hBuffer       ComputeDistancesCB;
+
+	hRenderTarget shadowRenderTarget;
+	TextureSize   size;
+
+	RenderTexture DistancesRT;
 };
 

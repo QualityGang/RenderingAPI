@@ -29,12 +29,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Window window(context, "Title", 800, 600);
 	//window.setVSyncEnabled(false);
 
-	Bitmap bmp(context, "sunset.png");;
+	Bitmap bmp(context, "sunset.png");
+	Bitmap bmp2(context, "box.png");
 
 	Sprite sprite;
 	sprite.setSize((float)window.getSize().x, (float)window.getSize().y);
 	sprite.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
 	sprite.setTexture(bmp.getTexture2D());
+
+	Sprite sprite2;
+	sprite2.setPosition(100, 100);
+	sprite2.setSize(80, 80);
+	sprite2.setSrcRect(FloatRect(0, 0, (float)bmp2.getWidth(), (float)bmp2.getHeight()));
+	sprite2.setTexture(bmp2.getTexture2D());
 
 	BloomSettings settings;
 	settings.bloomThreshold  = 0.25f;
@@ -92,10 +99,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			window.clear(Color(0, 0, 0, 255));
 
 			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
-			batch.draw(sprite);
+			//batch.draw(sprite);
+			batch.draw(sprite2);
 			batch.end();
 
-			bloom.apply(batch);
+			//bloom.apply(batch);
 
 			window.swapBuffers();
 #if _DEBUG
