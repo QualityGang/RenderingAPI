@@ -7,10 +7,10 @@ RenderTexture::RenderTexture(GraphicsContext *context)
 {
 }
 
-RenderTexture::RenderTexture(GraphicsContext *context, uint32_t width, uint32_t height)
+RenderTexture::RenderTexture(GraphicsContext *context, uint32_t width, uint32_t height, PixelFormat format)
 	: context(context)
 {
-	create(width, height);
+	create(width, height, format);
 }
 
 RenderTexture::RenderTexture(GraphicsContext *context, const Bitmap &bmp)
@@ -25,11 +25,11 @@ RenderTexture::~RenderTexture()
 	context->releaseTexture2D(texture);
 }
 
-void RenderTexture::create(uint32_t width, uint32_t height)
+void RenderTexture::create(uint32_t width, uint32_t height, PixelFormat format)
 {
 	this->~RenderTexture();
 
-	texture = context->createTexture2D(width, height, PixelFormat_RGBA8, 1, 1,
+	texture = context->createTexture2D(width, height, format, 1, 1,
 		TextureFlag_RenderTarget | TextureFlag_ShaderResource, AccessFlag_Default, nullptr, 0);
 
 	initRenderTarget(texture, width, height);

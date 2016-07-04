@@ -57,6 +57,7 @@ static class GameRoot
 
 	public static void Dispose()
 	{
+		bloom.Dispose();
 		Window.Dispose();
 		spriteBatch.Dispose();
 		Art.Dispose();

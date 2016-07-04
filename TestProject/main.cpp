@@ -47,6 +47,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Bloom bloom(context);
 	bloom.setSettings(settings);
 	bloom.setRenderTarget(window.getRenderTarget());
+	//bloom.setShowFilter(Bloom::BlurredBothWays);
 	
 	SpriteBatch batch(context);
 

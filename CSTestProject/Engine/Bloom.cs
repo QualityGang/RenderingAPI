@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-class Bloom
+class Bloom : IDisposable
 {
 	IntPtr nativeBloom;
 
@@ -16,7 +16,6 @@ class Bloom
 
 	~Bloom()
 	{
-		Bloom_Release(nativeBloom);
 	}
 
 	public void Apply(SpriteBatch batch)
@@ -42,6 +41,11 @@ class Bloom
 	public BloomSettings GetSettings()
 	{
 		return Bloom_GetSettings(nativeBloom);
+	}
+
+	public void Dispose()
+	{
+		Bloom_Release(nativeBloom);
 	}
 
 	[DllImport("RenderingAPI.dll")]
