@@ -11,9 +11,9 @@
 D3D11GraphicsContext::D3D11GraphicsContext()
 {
 	UINT flags = 0;
-#if _DEBUG
-	flags = D3D11_CREATE_DEVICE_DEBUG;
-#endif
+//#if _DEBUG
+//	flags = D3D11_CREATE_DEVICE_DEBUG;
+//#endif
 
 	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
 

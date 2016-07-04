@@ -1,47 +1,36 @@
 #include "ShadowMap.h"
-#include "Sprite.h"
-#include "SpriteBatch.h"
-#include "FreeImage.h"
 
-ShadowMap::ShadowMap(GraphicsContext *context, uint32_t width, uint32_t height) : context(context), renderTexture(context, width, height)
+ShadowMap::ShadowMap(GraphicsContext* context) : context(context), DistancesRT(context)
 {
-	context->clearRenderTarget(renderTexture.getRenderTarget(), 0, Color(0, 0, 0, 150));
-
-	shadowSprite.setPosition(0, 0);
-	shadowSprite.setSize(800, 600);
-	shadowSprite.setSrcRect(FloatRect(0, 0, 800, 600));
-	shadowSprite.setTexture(renderTexture.getTexture2D());
+	//ComputeDistancesPS = context->createPixelShader(g_ShadowEffectPS, sizeof(g_ShadowEffectPS));
+	//ComputeDistancesCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
 }
 
 ShadowMap::~ShadowMap()
 {
+	context->releasePixelShader(ComputeDistancesPS);
+	context->releaseBuffer(ComputeDistancesCB);
 }
 
-void ShadowMap::update(const Window &window,  OrthographicCamera &camera)
+void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 {
-	float left = 0;
-	float top = 0;
-	float right = (float)window.getSize().x;
-	float bottom = (float)window.getSize().y;
+	shadowRenderTarget = renderTarget;
 
-	DirectX::XMFLOAT4 leftTop(left, top, 0.0f, 1.0f);
-	camera.unproject(window, &leftTop);
+	if (!shadowRenderTarget)
+		return;
 
-	left = leftTop.x;
-	top = leftTop.y;
+	TextureSize rtSize;
+	context->getRenderTargetSize(renderTarget, 0, &rtSize);
 
-	DirectX::XMFLOAT4 rightBottom(right, bottom, 0.0f, 1.0f);
-	camera.unproject(window, &rightBottom);
+	if (size.width != rtSize.width || size.height != rtSize.height)
+	{
+		size = rtSize;
 
-	right = rightBottom.x;
-	bottom = rightBottom.y;
+		DistancesRT.create(size.width, size.height);
+	}
+}
 
-	float width = right - left;
-	float height = bottom - top;
+void ShadowMap::draw(SpriteBatch batch)
+{
 
-	shadowSprite.setPosition(camera.getX(), camera.getY());
-	shadowSprite.setRotationAnchor(0.5, 0.5);
-	shadowSprite.setPositionAnchor(0.5, 0.5);
- 	shadowSprite.setSize(camera.getViewportWidth() * camera.getZoom(), camera.getViewportHeight() * camera.getZoom());
-	shadowSprite.setAngle(camera.getAngle());
 }
