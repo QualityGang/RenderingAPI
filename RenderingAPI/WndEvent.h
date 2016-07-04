@@ -22,7 +22,7 @@ struct WndEvent
 		MouseWheel
 	};
 
-	EventType type;
+	EventType type = Unknown;
 
 	union
 	{

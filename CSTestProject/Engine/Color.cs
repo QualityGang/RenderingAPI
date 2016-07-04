@@ -15,6 +15,7 @@ struct Color
     public static readonly Color DarkGray   = new Color(0x3f3f3fff);
                   
     public static readonly Color Blue       = new Color(0, 0, 255, 255);
+	public static readonly Color LightBlue  = new Color(0xffadd8e6);
     public static readonly Color Navy       = new Color(0, 0, 127, 255);
     public static readonly Color Royal      = new Color(0x4169e1ff);
     public static readonly Color Slate      = new Color(0x708090ff);
@@ -23,6 +24,7 @@ struct Color
     public static readonly Color Teal       = new Color(0, 127, 127, 255);
                   
     public static readonly Color Green      = new Color(0x00ff00ff);
+	public static readonly Color LightGreen = new Color(0xff90ee90);
     public static readonly Color Chartreuse = new Color(0x7fff00ff);
     public static readonly Color Lime       = new Color(0x32cd32ff);
     public static readonly Color Forest     = new Color(0x228b22ff);
@@ -58,6 +60,14 @@ struct Color
         A = a;
     }
 
+	public Color(float r, float g, float b, float a)
+	{
+		R = (byte)(r * 255);
+		G = (byte)(g * 255);
+		B = (byte)(b * 255);
+		A = (byte)(a * 255);
+	}
+
     public Color(uint rgba8888)
     {
         R = (byte)((rgba8888 & 0xFF000000) >> 24);
@@ -65,4 +75,24 @@ struct Color
         B = (byte)((rgba8888 & 0x0000FF00) >>  8);
         A = (byte)((rgba8888 & 0x000000FF) >>  0);
     }
+
+	public static Color Lerp(Color value1, Color value2, Single amount)
+	{
+		byte Red   = (byte)MathUtils.Lerp(value1.R, value2.R, amount);
+		byte Green = (byte)MathUtils.Lerp(value1.G, value2.G, amount);
+		byte Blue  = (byte)MathUtils.Lerp(value1.B, value2.B, amount);
+		byte Alpha = (byte)MathUtils.Lerp(value1.A, value2.A, amount);
+
+		return new Color(Red, Green, Blue, Alpha);
+	}
+
+	public static Color operator*(Color color, float scale)
+	{
+		byte r = (byte)(color.R * scale);
+		byte g = (byte)(color.G * scale);
+		byte b = (byte)(color.B * scale);
+		byte a = (byte)(color.A * scale);
+
+		return new global::Color(r, g, b, a);
+	}
 }

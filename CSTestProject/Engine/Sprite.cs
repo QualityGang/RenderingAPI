@@ -17,7 +17,7 @@ class Sprite
     ~Sprite()
     {
         Sprite_Release(nativeSprite);
-    }
+	}
 
     public void SetPosition(float x, float y)
     {
@@ -44,14 +44,84 @@ class Sprite
         Sprite_SetColor(nativeSprite, color);
     }
 
+    public void SetSrcRect(float srcX, float srcY, float srcWidth, float srcHeight)
+    {
+        Sprite_SetSrcRect(nativeSprite, srcX, srcY, srcWidth, srcHeight);
+    }
+
     public void SetTexture(IntPtr texture)
     {
         Sprite_SetTexture(nativeSprite, texture);
     }
 
-    public void SetSrcRect(float srcX, float srcY, float srcWidth, float srcHeight)
+    public void SetPositionAnchor(float anchorX, float anchorY)
     {
-        Sprite_SetSrcRect(nativeSprite, srcX, srcY, srcWidth, srcHeight);
+        Sprite_SetPositionAnchor(nativeSprite, anchorX, anchorY);
+    }
+
+    public void SetRotationAnchor(float anchorX, float anchorY)
+    {
+        Sprite_SetRotationAnchor(nativeSprite, anchorX, anchorY);
+    }
+
+    public float GetX()
+    {
+        return Sprite_GetX(nativeSprite);
+    }
+     
+    public float GetY()
+    {
+        return Sprite_GetY(nativeSprite);
+    }
+
+    public float GetDepth()
+    {
+        return Sprite_GetDepth(nativeSprite);
+    }
+
+    public float GetWidth()
+    {
+        return Sprite_GetWidth(nativeSprite);
+    }
+     
+    public float GetHeight()
+    {
+        return Sprite_GetHeight(nativeSprite);
+    }
+     
+    public float GetAngle()
+    {
+        return Sprite_GetAngle(nativeSprite);
+    }
+     
+    public Color GetColor()
+    {
+        return Sprite_GetColor(nativeSprite);
+    }
+     
+    public IntPtr GetTexture()
+    {
+        return Sprite_GetTexture(nativeSprite);
+    }
+
+    public float GetPositionAnchorX()
+    {
+        return Sprite_GetPositionAnchorX(nativeSprite);
+    }
+
+    public float GetPositionAnchorY()
+    {
+        return Sprite_GetPositionAnchorY(nativeSprite);
+    }
+
+    public float GetRotationAnchorX()
+    {
+        return Sprite_GetRotationAnchorX(nativeSprite);
+    }
+
+    public float GetRotationAnchorY()
+    {
+        return Sprite_GetRotationAnchorY(nativeSprite);
     }
 
     internal IntPtr GetNativePtr()
@@ -90,6 +160,12 @@ class Sprite
     //private static extern void Sprite_SetEffect(IntPtr sprite, SpriteEffect effect);
 
     [DllImport("RenderingAPI.dll")]
+    private static extern void Sprite_SetPositionAnchor(IntPtr sprite, float anchorX, float anchorY);
+
+    [DllImport("RenderingAPI.dll")]
+    private static extern void Sprite_SetRotationAnchor(IntPtr sprite, float anchorX, float anchorY);
+
+    [DllImport("RenderingAPI.dll")]
     private static extern float Sprite_GetX(IntPtr sprite);
 
     [DllImport("RenderingAPI.dll")]
@@ -117,4 +193,16 @@ class Sprite
 
     //[DllImport("RenderingAPI.dll")]
     //private static extern SpriteEffect Sprite_GetEffect(IntPtr sprite);
+
+    [DllImport("RenderingAPI.dll")]
+    private static extern float Sprite_GetPositionAnchorX(IntPtr sprite);
+
+    [DllImport("RenderingAPI.dll")]
+    private static extern float Sprite_GetPositionAnchorY(IntPtr sprite);
+
+    [DllImport("RenderingAPI.dll")]
+    private static extern float Sprite_GetRotationAnchorX(IntPtr sprite);
+
+    [DllImport("RenderingAPI.dll")]
+    private static extern float Sprite_GetRotationAnchorY(IntPtr sprite);
 }

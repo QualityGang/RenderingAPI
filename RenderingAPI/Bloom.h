@@ -55,7 +55,7 @@ private:
 	RenderTexture renderTexture1;
 	RenderTexture renderTexture2;
 
-	BloomSettings settings = BloomSettings::PresetSettings[0];
+	BloomSettings settings = BloomSettings::Default;
 
 	ShowFilter showFilter = FinalResult;
 };

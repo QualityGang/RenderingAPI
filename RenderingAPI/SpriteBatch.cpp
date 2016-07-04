@@ -267,7 +267,7 @@ void SpriteBatch::transformVertices(const Sprite &sprite, SpriteVertex *v, uint3
 	XMVECTOR origin      = XMVectorSet(sprite.getWidth() * sprite.getRotationAnchorX(), sprite.getHeight() * sprite.getRotationAnchorY(), 0.0f, 0.0f);
 	XMVECTOR translation = XMVectorSet(x, y, sprite.getDepth(), 0.0f);
 
-	XMMATRIX worldMatrix = XMMatrixAffineTransformation2D(scaling, origin, XMConvertToRadians(-sprite.getAngle()), translation);
+	XMMATRIX worldMatrix = XMMatrixAffineTransformation2D(scaling, origin, XMConvertToRadians(sprite.getAngle()), translation);
 
 	XMMATRIX transform = worldMatrix * projection;
 

@@ -5,23 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-class SpriteBatch
+class SpriteBatch : IDisposable
 {
     private IntPtr nativeBatch;
 
-    public SpriteBatch(IntPtr context)
+    public SpriteBatch(GraphicsContext context)
     {
-        nativeBatch = SpriteBatch_Create(context);
+        nativeBatch = SpriteBatch_Create(context.GetNativePtr());
     }
 
     ~SpriteBatch()
     {
-        SpriteBatch_Release(nativeBatch);
     }
 
-    public void Begin(Window window, OrthographicCamera camera)
+    public void Begin(IntPtr renderTarget, OrthographicCamera camera)
     {
-        SpriteBatch_Begin(nativeBatch, window.GetRenderTarget(), camera.GetNativePtr());
+        SpriteBatch_Begin(nativeBatch, renderTarget, camera != null ? camera.GetNativePtr() : IntPtr.Zero);
     }
 
     public void End()
@@ -33,6 +32,18 @@ class SpriteBatch
     {
         SpriteBatch_Draw(nativeBatch, sprite.GetNativePtr());
     }
+
+	internal IntPtr GetNativePtr()
+	{
+		return nativeBatch;
+	}
+
+	public void Dispose()
+	{
+		SpriteBatch_Release(nativeBatch);
+		nativeBatch = IntPtr.Zero;
+		GC.SuppressFinalize(this);
+	}
 
     [DllImport("RenderingAPI.dll")]
     private static extern IntPtr SpriteBatch_Create(IntPtr context);

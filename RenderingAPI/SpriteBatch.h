@@ -12,7 +12,7 @@
 #include "NonCopyable.h"
 #include "DLLExport.h"
 
-class SpriteBatch : public NonCopyable
+class SpriteBatch : public NonCopyable, public AlignedNew<16>
 {
 public:
 	DLL_REN_API SpriteBatch(GraphicsContext *context, uint32_t batchSize = 2048);

@@ -21,12 +21,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Bitmap whitePixel(context, 1, 1, nullptr);
 	whitePixel.setPixel(0, Color(255, 255, 255, 255));
 
-	OrthographicCamera camera(64, 32, false);
-	camera.setPosition(-32, -16);
-	camera.update();
-
 	Chip8 chip;
 	chip.load("pong2.c8");
+
+	OrthographicCamera camera(32, 16, 64, 32);
 
 	Sprite sprite;
 	sprite.setSize(1, 1);
@@ -70,7 +68,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			char gfx[64 * 32];
 			chip.getDisplay(gfx);
 
-			batch.begin(window.getRenderTarget(), camera);
+			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
 
 			for (int iy = 0; iy < 32; iy++)
 			{

@@ -13,20 +13,22 @@ enum RenderingAPI
 class GraphicsDevice
 {
     private IntPtr nativeDevice;
+    private GraphicsContext context;
 
     public GraphicsDevice(RenderingAPI api)
     {
         nativeDevice = GraphicsDevice_Create((uint)api);
+        context = new GraphicsContext(GraphicsDevice_GetContext(nativeDevice));
     }
 
     ~GraphicsDevice()
     {
         GraphicsDevice_Release(nativeDevice);
-    }
+	}
 
-    public IntPtr GetContext()
+    public GraphicsContext GetContext()
     {
-        return GraphicsDevice_GetContext(nativeDevice);
+        return context;
     }
 
     public RenderingAPI GetAPI()

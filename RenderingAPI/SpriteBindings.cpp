@@ -50,6 +50,16 @@ extern "C" DLL_REN_API void Sprite_SetEffect(Sprite *sprite, SpriteEffect effect
 	sprite->setEffect(effect);
 }
 
+extern "C" DLL_REN_API void Sprite_SetPositionAnchor(Sprite *sprite, float anchorX, float anchorY)
+{
+	sprite->setPositionAnchor(anchorX, anchorY);
+}
+
+extern "C" DLL_REN_API void Sprite_SetRotationAnchor(Sprite *sprite, float anchorX, float anchorY)
+{
+	sprite->setRotationAnchor(anchorX, anchorY);
+}
+
 extern "C" DLL_REN_API float Sprite_GetX(Sprite *sprite)
 {
 	return sprite->getX();
@@ -80,15 +90,15 @@ extern "C" DLL_REN_API float Sprite_GetAngle(Sprite *sprite)
 	return sprite->getAngle();
 }
 
-//extern "C" DLL_REN_API const Color<float> Sprite_GetColor()
-//{
-//
-//}
+extern "C" DLL_REN_API Color Sprite_GetColor(Sprite *sprite)
+{
+	return sprite->getColor();
+}
 
-//extern "C" DLL_REN_API hTexture2D Sprite_GetTexture(Sprite *sprite)
-//{
-//	return sprite->getTexture();
-//}
+extern "C" DLL_REN_API void* Sprite_GetTexture(Sprite *sprite)
+{
+	return sprite->getTexture().as<void>();
+}
 
 //extern "C" DLL_REN_API const Rect<float> Sprite_GetSrcRect()
 //{
@@ -98,4 +108,24 @@ extern "C" DLL_REN_API float Sprite_GetAngle(Sprite *sprite)
 extern "C" DLL_REN_API SpriteEffect Sprite_GetEffect(Sprite *sprite)
 {
 	return sprite->getEffect();
+}
+
+extern "C" DLL_REN_API float Sprite_GetPositionAnchorX(Sprite *sprite)
+{
+	return sprite->getPositionAnchorX();
+}
+
+extern "C" DLL_REN_API float Sprite_GetPositionAnchorY(Sprite *sprite)
+{
+	return sprite->getPositionAnchorY();
+}
+
+extern "C" DLL_REN_API float Sprite_GetRotationAnchorX(Sprite *sprite)
+{
+	return sprite->getRotationAnchorX();
+}
+
+extern "C" DLL_REN_API float Sprite_GeRotationAnchorY(Sprite *sprite)
+{
+	return sprite->getRotationAnchorY();
 }

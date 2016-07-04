@@ -5,6 +5,8 @@
 
 #include "Throw.h"
 
+#include <string>
+
 Bitmap::_StaticInit Bitmap::__static_init;
 
 Bitmap::Bitmap(GraphicsContext *context)
@@ -32,6 +34,9 @@ Bitmap::Bitmap(GraphicsContext *context, hTexture2D texture)
 
 Bitmap::~Bitmap()
 {
+	OutputDebugString(std::to_string((int64_t)context).c_str());
+	OutputDebugString("\n");
+
 	delete[] buffer;
 	context->releaseTexture2D(texture);
 }

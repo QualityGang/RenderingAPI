@@ -164,8 +164,8 @@ void Bloom::setBlurParameters(float dx, float dy) const
 		float sampleOffset = i * 2 + 1.5f;
 
 		XMFLOAT2A delta(dx, dy);
-		dx *= sampleOffset;
-		dy *= sampleOffset;
+		delta.x *= sampleOffset;
+		delta.y *= sampleOffset;
 
 		// Store texture coordinate offsets for the positive and negative taps.
 		sampleOffsets[i * 2 + 1] = delta;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "DLLExport.h"
+
 struct BloomSettings
 {
 	// Controls how bright a pixel needs to be before it will bloom.
@@ -21,19 +23,12 @@ struct BloomSettings
 	// unchanged, while higher values increase the saturation level.
 	float bloomSaturation;
 	float baseSaturation;
-
 	
 	// Table of preset bloom settings.
-	static const BloomSettings PresetSettings[];
-};
-
-const BloomSettings BloomSettings::PresetSettings[] =
-{
-					 // Thresh  Blur Bloom  Base  BloomSat BaseSat
-	/* Default     */ { 0.25f,  4,   1.25f, 1,    1,       1 },
-	/* Soft        */ { 0,      3,   1,     1,    1,       1 },
-	/* Desaturated */ { 0.5f,   8,   2,     1,    0,       1 },
-	/* Saturated   */ { 0.25f,  4,   2,     1,    2,       0 },
-	/* Blurry      */ { 0,      2,   1,     0.1f, 1,       1 },
-	/* Subtle      */ { 0.5f,   2,   1,     1,    1,       1 },
+	DLL_REN_API static const BloomSettings Default;
+	DLL_REN_API static const BloomSettings Soft;
+	DLL_REN_API static const BloomSettings Desaturated;
+	DLL_REN_API static const BloomSettings Saturated;
+	DLL_REN_API static const BloomSettings Blurry;
+	DLL_REN_API static const BloomSettings Subtle;
 };

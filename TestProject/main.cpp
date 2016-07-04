@@ -47,9 +47,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Bloom bloom(context);
 	bloom.setSettings(settings);
 	bloom.setRenderTarget(window.getRenderTarget());
-	//bloom.setShowFilter(Bloom::PreBloom);
 	
 	SpriteBatch batch(context);
+
+	OrthographicCamera camera(window.getSize().x / 2.0f, window.getSize().y / 2.0f, (float)window.getSize().x, (float)window.getSize().y);
 
 	WndEvent e;
 
@@ -72,13 +73,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				prevWidth  = window.getSize().x;
 				prevHeight = window.getSize().y;
 
-				sprite.setSize((float)prevWidth, (float)prevHeight);
+				camera.setViewport((float)prevWidth, (float)prevHeight);
 				bloom.setRenderTarget(window.getRenderTarget());
 			}
 
+			if (window.isKeyPressed(Key::W))
+				camera.setPosition(camera.getX(), camera.getY() - 1);
+			if (window.isKeyPressed(Key::S))
+				camera.setPosition(camera.getX(), camera.getY() + 1);
+			if (window.isKeyPressed(Key::A))
+				camera.setPosition(camera.getX() - 1, camera.getY());
+			if (window.isKeyPressed(Key::D))
+				camera.setPosition(camera.getX() + 1, camera.getY());
+
+			camera.update();
+
 			window.clear(Color(0, 0, 0, 255));
 
-			batch.begin(window.getRenderTarget());
+			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
 			batch.draw(sprite);
 			batch.end();
 

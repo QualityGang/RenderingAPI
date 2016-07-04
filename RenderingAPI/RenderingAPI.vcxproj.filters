@@ -284,6 +284,15 @@
     <ClCompile Include="Bloom.cpp">
       <Filter>Source\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicsContextBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="BloomBindings.cpp">
+      <Filter>Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="BloomSettings.cpp">
+      <Filter>Source\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="SpriteVS.hlsl">

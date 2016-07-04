@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -47,19 +48,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bitmap.cs" />
-    <Compile Include="Color.cs" />
-    <Compile Include="GraphicsDevice.cs" />
-    <Compile Include="OrthographicCamera.cs" />
+    <Compile Include="Art.cs" />
+    <Compile Include="BlackHole.cs" />
+    <Compile Include="BloomSettings.cs" />
+    <Compile Include="Bullet.cs" />
+    <Compile Include="ColorUtils.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="EnemySpawner.cs" />
+    <Compile Include="Engine\Bitmap.cs" />
+    <Compile Include="Engine\Bloom.cs" />
+    <Compile Include="Engine\Color.cs" />
+    <Compile Include="Engine\GraphicsContext.cs" />
+    <Compile Include="Engine\GraphicsDevice.cs" />
+    <Compile Include="Engine\OrthographicCamera.cs" />
+    <Compile Include="Engine\TextureSize.cs" />
+    <Compile Include="Engine\Math\Vector3.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="EntityManager.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Grid.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="Engine\Math\MathUtils.cs" />
+    <Compile Include="ParticleManager.cs" />
+    <Compile Include="ParticleState.cs" />
+    <Compile Include="PlayerShip.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sprite.cs" />
-    <Compile Include="SpriteBatch.cs" />
-    <Compile Include="Window.cs" />
-    <Compile Include="WndEvent.cs" />
+    <Compile Include="Engine\Sprite.cs" />
+    <Compile Include="Engine\SpriteBatch.cs" />
+    <Compile Include="Engine\Window.cs" />
+    <Compile Include="Engine\WndEvent.cs" />
+    <Compile Include="Engine\Math\Vector2.cs" />
+    <Compile Include="Quaternion.cs" />
+    <Compile Include="Engine\Math\Rectangle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Engine\Keys.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

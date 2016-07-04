@@ -17,7 +17,7 @@ class OrthographicCamera
     ~OrthographicCamera()
     {
         OrthographicCamera_Release(nativeCamera);
-    }
+	}
 
     public void Update()
     {
