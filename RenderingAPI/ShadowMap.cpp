@@ -60,12 +60,12 @@ void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTar
 	context->getTexture2DSize(texture, &texSize);
 
 	Sprite sprite;
-	sprite.setPosition(0, 0);
-	sprite.setSize((float)surfSize.width, (float)surfSize.height);
+	sprite.setPosition(400, 300);
+	sprite.setSize((float)200, (float)150);
 	sprite.setSrcRect(FloatRect(0, 0, (float)texSize.width, (float)texSize.height));
 	sprite.setTexture(texture);
 
-	batch.begin(renderTarget, SpriteSortMode_Deferred, nullptr, nullptr, ComputeDistancesPS);
+	batch.begin(sceneRenderTarget, SpriteSortMode_Deferred, nullptr, nullptr, ComputeDistancesPS);
 	batch.draw(sprite);
 	batch.end();
 }

@@ -28,5 +28,5 @@ VSOutput VSMain(VSInput input)
 
 float4 PSMain(VSOutput input) : SV_TARGET
 {
-	return Texture.Sample(Sampler, input.TexCoord) * input.Color;
+	return Texture.Sample(Sampler, input.TexCoord) * input.Color * 2;
 }
