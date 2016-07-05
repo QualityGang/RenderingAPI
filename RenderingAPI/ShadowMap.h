@@ -15,7 +15,7 @@ public:
 	DLL_REN_API void setRenderTarget(hRenderTarget renderTarget);
 	DLL_REN_API void draw(SpriteBatch &batch);
 
-	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader) const;
+	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader, float alpha) const;
 private:
 	GraphicsContext *context;
 	int shadowMapSize = ShadowMapSize::Default;
