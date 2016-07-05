@@ -1,5 +1,6 @@
 #include "Window.h"
 
+#include "DebugConsole.h"
 #include "Throw.h"
 
 #define IsMenuActiveByAlt(lParam) ((lParam >> 16) <= 0)
@@ -269,6 +270,7 @@ bool Window::getNextEvent(WndEvent *e) const
 
 void Window::processEvent(const WndEvent &e) const
 {
+	TranslateMessage(&e.msg);
 	DispatchMessage(&e.msg);
 }
 
@@ -402,6 +404,10 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 			if (window && window->renderWindow && width > 0 && height > 0)
 				window->context->resize(window->renderWindow, width, height);
 		} break;
+
+		case WM_CHAR:
+			DebugConsole::OnKey((uint32_t)wParam);
+			break;
 
 		case WM_DESTROY:
 			window->hwnd = nullptr;

@@ -31,7 +31,7 @@ public:
 	DLL_REN_API const CharInfo* getCharInfo(char c) const;
 	DLL_REN_API int getMaxAscent(const char *str) const;
 	DLL_REN_API int getMaxDescent(const char *str) const;
-	DLL_REN_API void getTextSize(const Text &text, float *width, float *height);
+	DLL_REN_API void getTextSize(const Text &text, float *width, float *height) const;
 
 	const Font*   getFont()   const { return font;   }
 	uint32_t      getWidth()  const { return width;  }

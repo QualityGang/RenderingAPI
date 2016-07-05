@@ -34,6 +34,9 @@
     <Filter Include="Source\Rendering\Shaders">
       <UniqueIdentifier>{b3d87ad6-a6e9-4d29-ac8f-4f28c2e8e9bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Window\DebugConsole">
+      <UniqueIdentifier>{8e018b44-9fa0-4d22-9f10-0c3697d7e88b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapType.h">
@@ -213,6 +216,15 @@
     <ClInclude Include="BloomSettings.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="TemplateUtils.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugConsole.h">
+      <Filter>Source\Window\DebugConsole</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugConsoleCommand.h">
+      <Filter>Source\Window\DebugConsole</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DynLib.cpp">
@@ -292,6 +304,12 @@
     </ClCompile>
     <ClCompile Include="BloomSettings.cpp">
       <Filter>Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugConsole.cpp">
+      <Filter>Source\Window\DebugConsole</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugConsoleCommand.cpp">
+      <Filter>Source\Window\DebugConsole</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

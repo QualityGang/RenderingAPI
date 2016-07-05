@@ -204,6 +204,8 @@
     <ClInclude Include="ColorWriteMask.h" />
     <ClInclude Include="ComparisonFunc.h" />
     <ClInclude Include="AccessFlag.h" />
+    <ClInclude Include="DebugConsole.h" />
+    <ClInclude Include="DebugConsoleCommand.h" />
     <ClInclude Include="DepthStencilState.h" />
     <ClInclude Include="DepthWriteMask.h" />
     <ClInclude Include="Font.h" />
@@ -218,6 +220,8 @@
     <ClCompile Include="Bloom.cpp" />
     <ClCompile Include="BloomBindings.cpp" />
     <ClCompile Include="BloomSettings.cpp" />
+    <ClCompile Include="DebugConsole.cpp" />
+    <ClCompile Include="DebugConsoleCommand.cpp" />
     <ClCompile Include="GraphicsContext.cpp" />
     <ClCompile Include="GraphicsContextBindings.cpp" />
     <ClCompile Include="PrimitiveBatch.cpp">
@@ -252,6 +256,7 @@
     <ClInclude Include="SpriteEffect.h" />
     <ClInclude Include="SpriteSortMode.h" />
     <ClInclude Include="stringex.h" />
+    <ClInclude Include="TemplateUtils.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="VertexTypes.h" />
     <ClInclude Include="WndEvent.h" />

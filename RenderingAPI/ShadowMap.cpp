@@ -49,6 +49,8 @@ void ShadowMap::draw(SpriteBatch &batch)
 	context->setDepthStencilState(context->DSSNone);
 
 	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), ComputeDistancesPS);
+
+	context->setDepthStencilState(context->DSSDefault);
 }
 
 void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader) const

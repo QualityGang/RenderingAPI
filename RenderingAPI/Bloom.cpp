@@ -121,7 +121,7 @@ void Bloom::setBlurParameters(float dx, float dy) const
 	static const uint32_t SampleCount = 15;
 
 	ALIGN(16)
-		struct FloatA : AlignedNew<16>
+	struct FloatA : AlignedNew<16>
 	{
 		float value;
 

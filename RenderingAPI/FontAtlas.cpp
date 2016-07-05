@@ -118,7 +118,7 @@ int FontAtlas::getMaxDescent(const char *str) const
 	return descent;
 }
 
-void FontAtlas::getTextSize(const Text &text, float *width, float *height)
+void FontAtlas::getTextSize(const Text &text, float *width, float *height) const
 {
 	if (!font)
 		return;

@@ -1,9 +1,5 @@
 
-#include <iostream>
-
-#if _DEBUG
-#include <chrono>
-#endif
+#include <sstream>
 
 #include <GraphicsDevice.h>
 #include <Window.h>
@@ -14,12 +10,32 @@
 #include <RenderTexture.h>
 #include <ShadowMap.h>
 #include <Bloom.h>
+#include <DebugConsole.h>
 
 #include <DirectXMath.h>
 
 #include <Throw.h>
 
 #pragma comment(lib, "RenderingAPI.lib")
+
+Sprite sprite2;
+
+void Print(const char *args)
+{
+	OutputDebugString("Print: ");
+	OutputDebugString(args);
+	OutputDebugString("\n");
+}
+ConsoleCommand(Print, print);
+
+void MoveBox(const char *args)
+{
+	std::stringstream ss(args);
+	float x, y;
+	ss >> x >> y;
+	sprite2.setPosition(x, y);
+}
+ConsoleCommand(MoveBox, move_box);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
@@ -32,12 +48,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Bitmap bmp(context, "sunset.png");
 	Bitmap bmp2(context, "box.png");
 
+	Font font("arial.ttf", 40);
+	FontAtlas atlas(context, FA_ALLLOWERCASE FA_ALLUPPERCASE FA_ALLNUMBERS "_", font);
+
+	uint8_t pixels[] = { 0, 0, 0, 255 };
+	Bitmap bmp3(context, 1, 1, pixels);
+
 	Sprite sprite;
 	sprite.setSize((float)window.getSize().x, (float)window.getSize().y);
 	sprite.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
 	sprite.setTexture(bmp.getTexture2D());
 
-	Sprite sprite2;
+	//Sprite sprite2;
 	sprite2.setPosition(100, 100);
 	sprite2.setSize(80, 80);
 	sprite2.setSrcRect(FloatRect(0, 0, (float)bmp2.getWidth(), (float)bmp2.getHeight()));
@@ -73,9 +95,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		else
 		{
-#if _DEBUG
-			auto t1 = std::chrono::high_resolution_clock::now();
-#endif
 			static uint32_t prevWidth = window.getSize().x;
 			static uint32_t prevHeight = window.getSize().y;
 
@@ -110,14 +129,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			shadowMap.draw(batch);
 			//bloom.apply(batch);
 
-			window.swapBuffers();
-#if _DEBUG
-			auto t2 = std::chrono::high_resolution_clock::now();
-			auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+			DebugConsole::Draw(context, window, batch, bmp3.getTexture2D(), atlas);
 
-			OutputDebugString(std::to_string(1000.0 / dt).c_str());
-			OutputDebugString("\n");
-#endif
+			window.swapBuffers();
 		}
 	}
 
