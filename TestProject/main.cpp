@@ -38,10 +38,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	sprite.setTexture(bmp.getTexture2D());
 
 	Sprite sprite2;
-	sprite2.setPosition(100, 100);
+	sprite2.setPosition(200, 200);
 	sprite2.setSize(80, 80);
 	sprite2.setSrcRect(FloatRect(0, 0, (float)bmp2.getWidth(), (float)bmp2.getHeight()));
 	sprite2.setTexture(bmp2.getTexture2D());
+
+	Sprite sprite3;
+	sprite3.setPosition(500, 400);
+	sprite3.setSize(80, 80);
+	sprite3.setSrcRect(FloatRect(0, 0, (float)bmp2.getWidth(), (float)bmp2.getHeight()));
+	sprite3.setTexture(bmp2.getTexture2D());
 
 	BloomSettings settings;
 	settings.bloomThreshold = 0.25f;
@@ -100,11 +106,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			camera.update();
 
-			window.clear(Color(0, 150, 0, 255));
+			window.clear(Color(255, 255, 0, 255));
+
+			static float xy = 0;
+			xy += 0.5f;
+
+			sprite2.setPosition(xy, xy);
 
 			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
 			//batch.draw(sprite);
 			batch.draw(sprite2);
+			batch.draw(sprite3);
 			batch.end();
 
 			shadowMap.draw(batch);

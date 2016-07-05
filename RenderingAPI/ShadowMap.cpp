@@ -48,10 +48,21 @@ void ShadowMap::draw(SpriteBatch &batch)
 
 	context->setDepthStencilState(context->DSSNone);
 
-	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), ComputeDistancesPS);
+	MapData mapData;
+	context->mapBuffer(ComputeDistancesCB, MapType_Write, &mapData);
+	float *backgroundColor = (float*)mapData.mem;
+	backgroundColor[0] = 255 / 255;
+	backgroundColor[1] = 255 / 255;
+	backgroundColor[2] = 0 / 255;
+	backgroundColor[3] = 255 / 255;
+	context->unmapBuffer(ComputeDistancesCB);
+	context->setPSConstantBuffers(&ComputeDistancesCB, 0, 1);
+
+	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), ComputeDistancesPS, 255);
+	renderFullscreenQuad(batch, sceneRenderTarget, distancesRT.getTexture2D(), nullptr, 100);
 }
 
-void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader) const
+void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader, float alpha) const
 {
 	TextureSize surfSize;
 	context->getRenderTargetSize(renderTarget, 0, &surfSize);
@@ -60,12 +71,13 @@ void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTar
 	context->getTexture2DSize(texture, &texSize);
 
 	Sprite sprite;
-	sprite.setPosition(400, 300);
-	sprite.setSize((float)200, (float)150);
+	sprite.setPosition(0, 0);
+	sprite.setSize((float)surfSize.width, (float)surfSize.height);
 	sprite.setSrcRect(FloatRect(0, 0, (float)texSize.width, (float)texSize.height));
 	sprite.setTexture(texture);
+	sprite.setColor(Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, alpha));
 
-	batch.begin(sceneRenderTarget, SpriteSortMode_Deferred, nullptr, nullptr, ComputeDistancesPS);
+	batch.begin(renderTarget, SpriteSortMode_Deferred, nullptr, nullptr, pixelShader);
 	batch.draw(sprite);
 	batch.end();
 }
