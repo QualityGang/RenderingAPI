@@ -118,6 +118,12 @@ void DebugConsole::RemoveCommand(const DebugConsoleCommand &command)
 	}), CommandList.end());
 }
 
+void DebugConsole::ListCommands()
+{
+	for (DebugConsoleCommand *command : CommandList)
+		AddLine(CommandToString(command).c_str(), SpecialColor);
+}
+
 void DebugConsole::Save()
 {
 
@@ -161,6 +167,7 @@ void DebugConsole::ProcessInputLine(const char *inputLine)
 			break;
 	}
 
+	std::string buffer;
 	void *value = command->getValuePtr();
 	bool error = false;
 
@@ -202,23 +209,22 @@ void DebugConsole::ProcessInputLine(const char *inputLine)
 		} break;
 		case DebugConsoleCommand::Type_Function:
 		{
-			std::string buffer;
 			std::getline(ss, buffer);
-			((DebugConsoleCommand::CallbackFunction)(value))(buffer.c_str());
+			error = !((DebugConsoleCommand::CallbackFunction)(value))(buffer.c_str());
 		} break;
 		default:
 			error = true;
 			break;
 	}
 
-	std::string output;
+	std::string output = CommandToString(command);
 
-	if (type != DebugConsoleCommand::Type_Function)
-		output = CommandToString(command);
+	if (type == DebugConsoleCommand::Type_Function)
+		output += " " + buffer;
 
 	if (error)
 		AddLine(output.c_str(), ErrorColor);
-	else if (type != DebugConsoleCommand::Type_Function)
+	else
 		AddLine(output.c_str(), SuccessColor);
 }
 
@@ -253,7 +259,6 @@ void DebugConsole::OnKey(uint32_t key)
 			case Key::Enter:
 				if (!InputLine.empty())
 				{
-					AddLine(InputLine.c_str(), InputColor);
 					ProcessInputLine(InputLine.c_str());
 					InputLine.clear();
 				}
@@ -270,28 +275,26 @@ std::string DebugConsole::CommandToString(DebugConsoleCommand *command)
 {
 	std::string name = command->getName();
 	void *value = command->getValuePtr();
-	
-	name += " = ";
 
 	switch (command->getType())
 	{
 		case DebugConsoleCommand::Type_Bool:
-			return name + std::to_string(*(bool*)value);
+			return name + " = " + std::to_string(*(bool*)value);
 
 		case DebugConsoleCommand::Type_Int32:
-			return name + std::to_string(*(int32_t*)value);
+			return name + " = " + std::to_string(*(int32_t*)value);
 
 		case DebugConsoleCommand::Type_UInt32:
-			return name + std::to_string(*(uint32_t*)value);
+			return name + " = " + std::to_string(*(uint32_t*)value);
 
 		case DebugConsoleCommand::Type_Float:
-			return name + std::to_string(*(float*)value);
+			return name + " = " + std::to_string(*(float*)value);
 
 		case DebugConsoleCommand::Type_Double:
-			return name + std::to_string(*(double*)value);
+			return name + " = " + std::to_string(*(double*)value);
 
 		case DebugConsoleCommand::Type_String:
-			return name + "\"" + std::string((char*)value) + "\"";
+			return name + " = " + "\"" + std::string((char*)value) + "\"";
 
 		case DebugConsoleCommand::Type_Function:
 			return name;
@@ -299,3 +302,17 @@ std::string DebugConsole::CommandToString(DebugConsoleCommand *command)
 
 	THROW("Unknown command");
 }
+
+static bool DebugConsole_List(const char *args)
+{
+	DebugConsole::ListCommands();
+	return true;
+}
+ConsoleCommand(DebugConsole_List, list);
+
+static bool DebugConsole_Clear(const char *args)
+{
+	DebugConsole::ClearLines();
+	return true;
+}
+ConsoleCommand(DebugConsole_Clear, clear);

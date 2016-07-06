@@ -21,22 +21,28 @@
 Sprite sprite2;
 
 uint32_t clearGreen = 150;
-ConsoleCommand(clearGreen, clearGreen);
+ConsoleCommand(clearGreen, clear_green);
 
-void Print(const char *args)
+bool Print(const char *args)
 {
 	OutputDebugString("Print: ");
 	OutputDebugString(args);
 	OutputDebugString("\n");
+	return true;
 }
 ConsoleCommand(Print, print);
 
-void MoveBox(const char *args)
+bool MoveBox(const char *args)
 {
 	std::stringstream ss(args);
 	float x, y;
 	if (ss >> x >> y)
+	{
 		sprite2.setPosition(x, y);
+		return true;
+	}
+
+	return false;
 }
 ConsoleCommand(MoveBox, move_box);
 
