@@ -64,8 +64,8 @@ void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 	context->setPSConstantBuffers(&ComputeDistancesCB, 0, 1);
 
 	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), ComputeDistancesPS, 255);
-	//renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), DistortPS, 255);
-	renderFullscreenQuad(batch, sceneRenderTarget, distancesRT.getTexture2D(), nullptr, 255);
+	renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), DistortPS, 255);
+	renderFullscreenQuad(batch, sceneRenderTarget, distortRT.getTexture2D(), nullptr, 255);
 }
 
 void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader, float alpha) const

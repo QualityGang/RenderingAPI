@@ -26,7 +26,7 @@ void Print(const char *args)
 	OutputDebugString(args);
 	OutputDebugString("\n");
 }
-ConsoleCommand(Print, print);
+//ConsoleCommand(Print, print);
 
 void MoveBox(const char *args)
 {
@@ -35,7 +35,7 @@ void MoveBox(const char *args)
 	ss >> x >> y;
 	sprite2.setPosition(x, y);
 }
-ConsoleCommand(MoveBox, move_box);
+//ConsoleCommand(MoveBox, move_box);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {

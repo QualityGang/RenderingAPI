@@ -103,8 +103,8 @@
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
       <ShaderType>Pixel</ShaderType>
-      <VariableName>g_ComputeDistancesPS</VariableName>
-      <HeaderFileOutput>ComputeDistancesPS.h</HeaderFileOutput>
+      <VariableName>g_DistortPS</VariableName>
+      <HeaderFileOutput>DistortPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -127,8 +127,8 @@
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
       <ShaderType>Pixel</ShaderType>
-      <VariableName>g_ComputeDistancesPS</VariableName>
-      <HeaderFileOutput>ComputeDistancesPS.h</HeaderFileOutput>
+      <VariableName>g_DistortPS</VariableName>
+      <HeaderFileOutput>DistortPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -155,8 +155,8 @@
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
       <ShaderType>Pixel</ShaderType>
-      <VariableName>g_ComputeDistancesPS</VariableName>
-      <HeaderFileOutput>ComputeDistancesPS.h</HeaderFileOutput>
+      <VariableName>g_DistortPS</VariableName>
+      <HeaderFileOutput>DistortPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -183,8 +183,8 @@
     <FxCompile>
       <EntryPointName>PSMain</EntryPointName>
       <ShaderType>Pixel</ShaderType>
-      <VariableName>g_ComputeDistancesPS</VariableName>
-      <HeaderFileOutput>ComputeDistancesPS.h</HeaderFileOutput>
+      <VariableName>g_DistortPS</VariableName>
+      <HeaderFileOutput>DistortPS.h</HeaderFileOutput>
       <ObjectFileOutput />
     </FxCompile>
   </ItemDefinitionGroup>
@@ -320,6 +320,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">g_ComputeDistancesPS</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ComputeDistancesPS.h</HeaderFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">g_ComputeDistancesPS</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ComputeDistancesPS.h</HeaderFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">g_ComputeDistancesPS</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ComputeDistancesPS.h</HeaderFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">g_ComputeDistancesPS</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ComputeDistancesPS.h</HeaderFileOutput>
     </FxCompile>
     <FxCompile Include="DistortPS.hlsl" />
     <FxCompile Include="GaussianBlurPS.hlsl">
