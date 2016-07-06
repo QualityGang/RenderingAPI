@@ -43,7 +43,7 @@ void DebugConsole::Draw(GraphicsContext *context, const Window &window, SpriteBa
 	float posX = 0;
 	float posY = 0;
 	float sizeX = w;
-	float sizeY = h / 4;
+	float sizeY = h;
 
 	float bottomPosX = posX + 0;
 	float bottomPosY = sizeY;
@@ -51,13 +51,9 @@ void DebugConsole::Draw(GraphicsContext *context, const Window &window, SpriteBa
 	float bottomSizeY = 5;
 
 	Text text;
+	text.setPosition(10, sizeY - posY - atlas.getFont()->getSize() - 10);
 	text.setString(InputLine.c_str());
-	text.setColor(InputColor);
-
-	float textW = 0, textH = 0;
-	atlas.getTextSize(text, &textW, &textH);
-
-	text.setPosition(20, sizeY - textH - posY - 5);
+	text.setColor(InputColor);;
 
 	Sprite sprite;
 	sprite.setPosition(posX, posY);
@@ -78,19 +74,18 @@ void DebugConsole::Draw(GraphicsContext *context, const Window &window, SpriteBa
 
 	batch.draw(text, atlas);
 
-	//for (const ConsoleLine &line : LineList)
-	//{
-	//	if (line.text.empty())
-	//		continue;
+	for (auto iter = LineList.rbegin(); iter != LineList.rend(); ++iter)
+	{
+		const ConsoleLine &line = *iter;
 
-	//	sprite.setColor(line.color);
-	//	
-	//	text.setPosition(text.getX(), text.getY() - textH - 5);
-	//	text.setString(line.text.c_str());
-	//	batch.draw(text, atlas);
-
-	//	atlas.getTextSize(text, &textW, &textH);
-	//}
+		if (line.text.empty())
+			continue;
+		
+		text.setPosition(text.getX(), text.getY() - atlas.getFont()->getSize() - 5);
+		text.setString(line.text.c_str());
+		text.setColor(line.color);
+		batch.draw(text, atlas);
+	}
 
 	batch.end();
 }
@@ -102,6 +97,9 @@ DebugConsoleCommand* DebugConsole::GetCommand(const char *name)
 	{
 		return !strcmp(name, command->getName());
 	});
+
+	if (iter == CommandList.end())
+		return nullptr;
 
 	return *iter;
 }
@@ -143,6 +141,13 @@ void DebugConsole::ProcessInputLine(const char *inputLine)
 	ss >> name;
 
 	DebugConsoleCommand *command = GetCommand(name.c_str());
+
+	if (!command)
+	{
+		AddLine(inputLine, ErrorColor);
+		return;
+	}
+
 	DebugConsoleCommand::Type type = command->getType();
 
 	// Remove whitespace at the beginning of the string stream
@@ -248,8 +253,8 @@ void DebugConsole::OnKey(uint32_t key)
 			case Key::Enter:
 				if (!InputLine.empty())
 				{
-					ProcessInputLine(InputLine.c_str());
 					AddLine(InputLine.c_str(), InputColor);
+					ProcessInputLine(InputLine.c_str());
 					InputLine.clear();
 				}
 				break;

@@ -20,6 +20,8 @@ public:
 	DLL_REN_API static void ProcessInputLine(const char *inputLine);
 
 	DLL_REN_API static void OnKey(uint32_t key);
+
+	DLL_REN_API static bool IsOpen() { return Open; }
 private:
 	DebugConsole() = delete;
 	~DebugConsole() = delete;

@@ -20,6 +20,9 @@
 
 Sprite sprite2;
 
+uint32_t clearGreen = 150;
+ConsoleCommand(clearGreen, clearGreen);
+
 void Print(const char *args)
 {
 	OutputDebugString("Print: ");
@@ -32,8 +35,8 @@ void MoveBox(const char *args)
 {
 	std::stringstream ss(args);
 	float x, y;
-	ss >> x >> y;
-	sprite2.setPosition(x, y);
+	if (ss >> x >> y)
+		sprite2.setPosition(x, y);
 }
 ConsoleCommand(MoveBox, move_box);
 
@@ -48,8 +51,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Bitmap bmp(context, "sunset.png");
 	Bitmap bmp2(context, "box.png");
 
-	Font font("arial.ttf", 40);
-	FontAtlas atlas(context, FA_ALLLOWERCASE FA_ALLUPPERCASE FA_ALLNUMBERS "_", font);
+	Font font("arial.ttf", 30);
+	FontAtlas atlas(context, FA_ALLLOWERCASE FA_ALLUPPERCASE FA_ALLNUMBERS "_.!?=-+*", font);
 
 	uint8_t pixels[] = { 0, 0, 0, 255 };
 	Bitmap bmp3(context, 1, 1, pixels);
@@ -108,18 +111,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				bloom.setRenderTarget(window.getRenderTarget());
 			}
 
-			if (window.isKeyPressed(Key::W))
-				camera.setPosition(camera.getX(), camera.getY() - 1);
-			if (window.isKeyPressed(Key::S))
-				camera.setPosition(camera.getX(), camera.getY() + 1);
-			if (window.isKeyPressed(Key::A))
-				camera.setPosition(camera.getX() - 1, camera.getY());
-			if (window.isKeyPressed(Key::D))
-				camera.setPosition(camera.getX() + 1, camera.getY());
+			if (!DebugConsole::IsOpen())
+			{
+				if (window.isKeyPressed(Key::W))
+					camera.setPosition(camera.getX(), camera.getY() - 1);
+				if (window.isKeyPressed(Key::S))
+					camera.setPosition(camera.getX(), camera.getY() + 1);
+				if (window.isKeyPressed(Key::A))
+					camera.setPosition(camera.getX() - 1, camera.getY());
+				if (window.isKeyPressed(Key::D))
+					camera.setPosition(camera.getX() + 1, camera.getY());
 
-			camera.update();
+				camera.update();
+			}
 
-			window.clear(Color(0, 150, 0, 255));
+			window.clear(Color(0, clearGreen, 0, 255));
 
 			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
 			//batch.draw(sprite);
