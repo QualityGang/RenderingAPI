@@ -1,16 +1,23 @@
 #include "ShadowMap.h"
 #include "ComputeDistancesPS.h"
+#include "DistortPS.h"
 
-ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) : context(context), distancesRT(context), sceneRenderTexture(context)
+ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) :
+	context(context), distancesRT(context), distortRT(context), sceneRenderTexture(context)
 {
 	shadowMapSize = 2 << size;
 	ComputeDistancesPS = context->createPixelShader(g_ComputeDistancesPS, sizeof(g_ComputeDistancesPS));
 	ComputeDistancesCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
+
+	DistortPS = context->createPixelShader(g_DistortPS, sizeof(g_DistortPS));
+	DistortCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
 }
 
 ShadowMap::~ShadowMap()
 {
 	context->releasePixelShader(ComputeDistancesPS);
+	context->releasePixelShader(DistortPS);
+	context->releaseBuffer(DistortCB);
 	context->releaseBuffer(ComputeDistancesCB);
 }
 
@@ -21,11 +28,11 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 	sceneRenderTarget = renderTarget;
 
 	distancesRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16F);
+	distortRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16F);
 
 	if (!sceneRenderTarget)
 		return;
 
-	// Look up the resolution of our source render target.
 	TextureSize rtSize;
 	context->getRenderTargetSize(renderTarget, 0, &rtSize);
 
@@ -37,7 +44,7 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 	}
 }
 
-void ShadowMap::draw(SpriteBatch &batch)
+void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 {
 	if (!sceneRenderTarget)
 		return;
@@ -45,21 +52,20 @@ void ShadowMap::draw(SpriteBatch &batch)
 	hTexture2D surface = context->getTexture2D(sceneRenderTarget, 0);
 	context->copyTexture2D(surface, sceneRenderTexture.getTexture2D());
 	context->releaseTexture2D(surface);
-
 	context->setDepthStencilState(context->DSSNone);
-
 	MapData mapData;
 	context->mapBuffer(ComputeDistancesCB, MapType_Write, &mapData);
-	float *backgroundColor = (float*)mapData.mem;
-	backgroundColor[0] = 255 / 255;
-	backgroundColor[1] = 255 / 255;
-	backgroundColor[2] = 0 / 255;
-	backgroundColor[3] = 255 / 255;
+	float *bgColor = (float*)mapData.mem;
+	bgColor[0] = (float)backgroundColor.r / 255.0f;
+	bgColor[1] = (float)backgroundColor.g / 255.0f;
+	bgColor[2] = (float)backgroundColor.b / 255.0f;
+	bgColor[3] = (float)backgroundColor.a / 255.0f;
 	context->unmapBuffer(ComputeDistancesCB);
 	context->setPSConstantBuffers(&ComputeDistancesCB, 0, 1);
 
 	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), ComputeDistancesPS, 255);
-	renderFullscreenQuad(batch, sceneRenderTarget, distancesRT.getTexture2D(), nullptr, 100);
+	//renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), DistortPS, 255);
+	renderFullscreenQuad(batch, sceneRenderTarget, distancesRT.getTexture2D(), nullptr, 255);
 }
 
 void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader, float alpha) const

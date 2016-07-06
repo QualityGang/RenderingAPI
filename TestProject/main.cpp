@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//window.setVSyncEnabled(false);
 
 	Bitmap bmp(context, "sunset.png");
-	Bitmap bmp2(context, "box.png");
+	Bitmap bmp2(context, "dtest.png");
 
 	Font font("arial.ttf", 40);
 	FontAtlas atlas(context, FA_ALLLOWERCASE FA_ALLUPPERCASE FA_ALLNUMBERS "_", font);
@@ -59,9 +59,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	sprite.setSrcRect(FloatRect(0, 0, (float)bmp.getWidth(), (float)bmp.getHeight()));
 	sprite.setTexture(bmp.getTexture2D());
 
-	//Sprite sprite2;
-	sprite2.setPosition(100, 100);
-	sprite2.setSize(80, 80);
+	Sprite sprite2;
+	sprite2.setSize((float)window.getSize().x, (float)window.getSize().y);
 	sprite2.setSrcRect(FloatRect(0, 0, (float)bmp2.getWidth(), (float)bmp2.getHeight()));
 	sprite2.setTexture(bmp2.getTexture2D());
 
@@ -119,14 +118,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			camera.update();
 
-			window.clear(Color(0, 150, 0, 255));
+			Color bg = Color(100, 255, 0, 255);
+			window.clear(bg);
 
 			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
-			//batch.draw(sprite);
 			batch.draw(sprite2);
 			batch.end();
 
-			shadowMap.draw(batch);
+			shadowMap.draw(batch,bg);
 			//bloom.apply(batch);
 
 			DebugConsole::Draw(context, window, batch, bmp3.getTexture2D(), atlas);

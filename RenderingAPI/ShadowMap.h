@@ -13,20 +13,24 @@ public:
 	DLL_REN_API ~ShadowMap();
 
 	DLL_REN_API void setRenderTarget(hRenderTarget renderTarget);
-	DLL_REN_API void draw(SpriteBatch &batch);
+	DLL_REN_API void draw(SpriteBatch &batch, Color backgroundColor);
 
 	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader, float alpha) const;
 private:
 	GraphicsContext *context;
 	int shadowMapSize = ShadowMapSize::Default;
 
-	hPixelShader  ComputeDistancesPS;
-	hBuffer       ComputeDistancesCB;
-
 	RenderTexture sceneRenderTexture;
 	hRenderTarget sceneRenderTarget;
 	TextureSize   size;
 
+	hPixelShader  ComputeDistancesPS;
+	hBuffer       ComputeDistancesCB;
+
+	hPixelShader  DistortPS;
+	hBuffer       DistortCB;
+
 	RenderTexture distancesRT;
+	RenderTexture distortRT;
 };
 
