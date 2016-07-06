@@ -141,10 +141,10 @@ void FontAtlas::getTextSize(const Text &text, float *width, float *height) const
 		{
 			case ' ':
 				pen.x += getCharInfo(' ')->advance.x;
-				continue;
+				break;
 			case '\t':
 				pen.x += getCharInfo(' ')->advance.x * 3;
-				continue;
+				break;
 			case '\n':
 				pen.x = 0;
 				pen.y += text.getLineGap() + maxDescent + maxAscent;

@@ -354,7 +354,7 @@ void SpriteBatch::draw(const Text &text, const FontAtlas &atlas)
 
 		Sprite sprite;
 		sprite.setPosition(text.getX() + pen.x + charInfo->rect.x, 
-						   text.getY() + pen.y - charInfo->rect.y + maxAscent);
+						   text.getY() + pen.y - charInfo->rect.y/* + maxAscent*/+ font->getSize());
 		sprite.setSize((float)charInfo->rect.width, (float)charInfo->rect.height);
 		sprite.setSrcRect(FloatRect((float)charInfo->charPos.x,  (float)charInfo->charPos.y,
 									(float)charInfo->rect.width, (float)charInfo->rect.height));

@@ -19,7 +19,7 @@ public:
 		Type_Function
 	};
 
-	typedef void(*CallbackFunction)(const char*);
+	typedef bool(*CallbackFunction)(const char*);
 
 	DLL_REN_API DebugConsoleCommand(void            *value, const char *name, Type type);
 	DLL_REN_API DebugConsoleCommand(int32_t         &value, const char *name);

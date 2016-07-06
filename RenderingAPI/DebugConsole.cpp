@@ -43,7 +43,7 @@ void DebugConsole::Draw(GraphicsContext *context, const Window &window, SpriteBa
 	float posX = 0;
 	float posY = 0;
 	float sizeX = w;
-	float sizeY = h / 4;
+	float sizeY = h;
 
 	float bottomPosX = posX + 0;
 	float bottomPosY = sizeY;
@@ -51,13 +51,9 @@ void DebugConsole::Draw(GraphicsContext *context, const Window &window, SpriteBa
 	float bottomSizeY = 5;
 
 	Text text;
+	text.setPosition(10, sizeY - posY - atlas.getFont()->getSize() - 10);
 	text.setString(InputLine.c_str());
-	text.setColor(InputColor);
-
-	float textW = 0, textH = 0;
-	atlas.getTextSize(text, &textW, &textH);
-
-	text.setPosition(20, sizeY - textH - posY - 5);
+	text.setColor(InputColor);;
 
 	Sprite sprite;
 	sprite.setPosition(posX, posY);
@@ -78,19 +74,18 @@ void DebugConsole::Draw(GraphicsContext *context, const Window &window, SpriteBa
 
 	batch.draw(text, atlas);
 
-	//for (const ConsoleLine &line : LineList)
-	//{
-	//	if (line.text.empty())
-	//		continue;
+	for (auto iter = LineList.rbegin(); iter != LineList.rend(); ++iter)
+	{
+		const ConsoleLine &line = *iter;
 
-	//	sprite.setColor(line.color);
-	//	
-	//	text.setPosition(text.getX(), text.getY() - textH - 5);
-	//	text.setString(line.text.c_str());
-	//	batch.draw(text, atlas);
-
-	//	atlas.getTextSize(text, &textW, &textH);
-	//}
+		if (line.text.empty())
+			continue;
+		
+		text.setPosition(text.getX(), text.getY() - atlas.getFont()->getSize() - 5);
+		text.setString(line.text.c_str());
+		text.setColor(line.color);
+		batch.draw(text, atlas);
+	}
 
 	batch.end();
 }
@@ -102,6 +97,9 @@ DebugConsoleCommand* DebugConsole::GetCommand(const char *name)
 	{
 		return !strcmp(name, command->getName());
 	});
+
+	if (iter == CommandList.end())
+		return nullptr;
 
 	return *iter;
 }
@@ -118,6 +116,12 @@ void DebugConsole::RemoveCommand(const DebugConsoleCommand &command)
 	{
 		return cmd->getName() == command.getName();
 	}), CommandList.end());
+}
+
+void DebugConsole::ListCommands()
+{
+	for (DebugConsoleCommand *command : CommandList)
+		AddLine(CommandToString(command).c_str(), SpecialColor);
 }
 
 void DebugConsole::Save()
@@ -143,6 +147,13 @@ void DebugConsole::ProcessInputLine(const char *inputLine)
 	ss >> name;
 
 	DebugConsoleCommand *command = GetCommand(name.c_str());
+
+	if (!command)
+	{
+		AddLine(inputLine, ErrorColor);
+		return;
+	}
+
 	DebugConsoleCommand::Type type = command->getType();
 
 	// Remove whitespace at the beginning of the string stream
@@ -156,6 +167,7 @@ void DebugConsole::ProcessInputLine(const char *inputLine)
 			break;
 	}
 
+	std::string buffer;
 	void *value = command->getValuePtr();
 	bool error = false;
 
@@ -197,23 +209,22 @@ void DebugConsole::ProcessInputLine(const char *inputLine)
 		} break;
 		case DebugConsoleCommand::Type_Function:
 		{
-			std::string buffer;
 			std::getline(ss, buffer);
-			((DebugConsoleCommand::CallbackFunction)(value))(buffer.c_str());
+			error = !((DebugConsoleCommand::CallbackFunction)(value))(buffer.c_str());
 		} break;
 		default:
 			error = true;
 			break;
 	}
 
-	std::string output;
+	std::string output = CommandToString(command);
 
-	if (type != DebugConsoleCommand::Type_Function)
-		output = CommandToString(command);
+	if (type == DebugConsoleCommand::Type_Function)
+		output += " " + buffer;
 
 	if (error)
 		AddLine(output.c_str(), ErrorColor);
-	else if (type != DebugConsoleCommand::Type_Function)
+	else
 		AddLine(output.c_str(), SuccessColor);
 }
 
@@ -249,7 +260,6 @@ void DebugConsole::OnKey(uint32_t key)
 				if (!InputLine.empty())
 				{
 					ProcessInputLine(InputLine.c_str());
-					AddLine(InputLine.c_str(), InputColor);
 					InputLine.clear();
 				}
 				break;
@@ -265,28 +275,26 @@ std::string DebugConsole::CommandToString(DebugConsoleCommand *command)
 {
 	std::string name = command->getName();
 	void *value = command->getValuePtr();
-	
-	name += " = ";
 
 	switch (command->getType())
 	{
 		case DebugConsoleCommand::Type_Bool:
-			return name + std::to_string(*(bool*)value);
+			return name + " = " + std::to_string(*(bool*)value);
 
 		case DebugConsoleCommand::Type_Int32:
-			return name + std::to_string(*(int32_t*)value);
+			return name + " = " + std::to_string(*(int32_t*)value);
 
 		case DebugConsoleCommand::Type_UInt32:
-			return name + std::to_string(*(uint32_t*)value);
+			return name + " = " + std::to_string(*(uint32_t*)value);
 
 		case DebugConsoleCommand::Type_Float:
-			return name + std::to_string(*(float*)value);
+			return name + " = " + std::to_string(*(float*)value);
 
 		case DebugConsoleCommand::Type_Double:
-			return name + std::to_string(*(double*)value);
+			return name + " = " + std::to_string(*(double*)value);
 
 		case DebugConsoleCommand::Type_String:
-			return name + "\"" + std::string((char*)value) + "\"";
+			return name + " = " + "\"" + std::string((char*)value) + "\"";
 
 		case DebugConsoleCommand::Type_Function:
 			return name;
@@ -294,3 +302,17 @@ std::string DebugConsole::CommandToString(DebugConsoleCommand *command)
 
 	THROW("Unknown command");
 }
+
+static bool DebugConsole_List(const char *args)
+{
+	DebugConsole::ListCommands();
+	return true;
+}
+ConsoleCommand(DebugConsole_List, list);
+
+static bool DebugConsole_Clear(const char *args)
+{
+	DebugConsole::ClearLines();
+	return true;
+}
+ConsoleCommand(DebugConsole_Clear, clear);

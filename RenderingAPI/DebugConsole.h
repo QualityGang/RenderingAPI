@@ -13,13 +13,17 @@ public:
 	DLL_REN_API static DebugConsoleCommand* GetCommand(const char *name);
 	DLL_REN_API static void AddCommand(DebugConsoleCommand &command);
 	DLL_REN_API static void RemoveCommand(const DebugConsoleCommand &command);
+	DLL_REN_API static void ListCommands();
 	DLL_REN_API static void Save();
 	DLL_REN_API static void Load();
 	 
 	DLL_REN_API static void AddLine(const char *line = "", const Color &color = NormalColor);
+	DLL_REN_API static void ClearLines() { LineList.clear(); }
 	DLL_REN_API static void ProcessInputLine(const char *inputLine);
 
 	DLL_REN_API static void OnKey(uint32_t key);
+
+	DLL_REN_API static bool IsOpen() { return Open; }
 private:
 	DebugConsole() = delete;
 	~DebugConsole() = delete;
