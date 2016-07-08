@@ -33,7 +33,7 @@ ShadowMap::~ShadowMap()
 	context->releaseBuffer(computeDistancesCB);
 	context->releaseBuffer(hReductionCB);
 
-	for (auto rt : reductionRT)
+	for(auto rt : reductionRT)
 	{
 		delete rt;
 	}
@@ -67,22 +67,24 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 
 void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source)
 {
-	TextureSize dsize;
-	context->getTexture2DSize(source->getTexture2D(), &dsize);
-
-	MapData reductionMapData;
-	context->mapBuffer(hReductionCB, MapType_Write, &reductionMapData);
-	float *tDims = (float*)reductionMapData.mem;
-	tDims[0] = 1.0f / (float)dsize.width;
-	tDims[1] = 1.0f / (float)dsize.height;
-	context->unmapBuffer(hReductionCB);
-	context->setPSConstantBuffers(&hReductionCB, 0, 1);
-
 	int step = reductionChainCount - 1;
 
-	while (step >= 0)
+	while(step >= 0)
 	{
-		renderFullscreenQuad(batch, reductionRT[step]->getRenderTarget(), source->getTexture2D(), nullptr, 255);
+		TextureSize dsize;
+		context->getTexture2DSize(source->getTexture2D(), &dsize);
+
+		MapData reductionMapData;
+		context->mapBuffer(hReductionCB, MapType_Write, &reductionMapData);
+		float *tDims = (float*)reductionMapData.mem;
+		tDims[0] = 1.0f / (float)dsize.width;
+		tDims[1] = 1.0f / (float)dsize.height;
+		context->unmapBuffer(hReductionCB);
+		context->setPSConstantBuffers(&hReductionCB, 0, 1);
+
+		renderFullscreenQuad(batch, reductionRT[step]->getRenderTarget(), source->getTexture2D(), hReductionPS, 255);
+		source = reductionRT[step];
+
 		step--;
 	}
 }
@@ -123,7 +125,7 @@ void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTar
 
 	TextureSize texSize;
 	context->getTexture2DSize(texture, &texSize);
-
+	
 	Sprite sprite;
 	sprite.setPosition(0, 0);
 	sprite.setSize((float)surfSize.width, (float)surfSize.height);

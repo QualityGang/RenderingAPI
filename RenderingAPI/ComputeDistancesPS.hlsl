@@ -18,6 +18,6 @@ struct VSOutput
 float4 PSMain(VSOutput input) : SV_TARGET
 {
 	float4 color = Texture.Sample(Sampler, input.TexCoord);
-	float distance = (color == BackgroundColor) ?  1.0f : length(input.TexCoord - 0.5f);
+	float distance = (color == BackgroundColor) ? 1.0f : length(input.TexCoord - 0.5f);
 	return float4(distance,0,0,1);
 }
