@@ -343,6 +343,9 @@
     <FxCompile Include="HorizontalReductionPS.hlsl">
       <Filter>Source\Rendering\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="DrawShadowPS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Sprite.fx">

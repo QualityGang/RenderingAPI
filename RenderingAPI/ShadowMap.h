@@ -16,7 +16,7 @@ public:
 	DLL_REN_API ~ShadowMap();
 
 	DLL_REN_API void setRenderTarget(hRenderTarget renderTarget);
-	DLL_REN_API void ApplyReduction(SpriteBatch &batch, RenderTexture *source);
+	DLL_REN_API void ApplyReduction(SpriteBatch &batch, RenderTexture *source, RenderTexture* destination);
 	DLL_REN_API void draw(SpriteBatch &batch, Color backgroundColor);
 
 	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader, float alpha) const;
@@ -38,8 +38,12 @@ private:
 	hPixelShader  hReductionPS;
 	hBuffer       hReductionCB;
 
+	hPixelShader  shadowPS;
+	hBuffer       shadowCB;
+
 	RenderTexture distancesRT;
 	RenderTexture distortRT;
 	vector<RenderTexture*> reductionRT;
+	RenderTexture shadowRT;
 };
 
