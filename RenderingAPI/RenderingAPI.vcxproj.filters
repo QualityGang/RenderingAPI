@@ -340,6 +340,9 @@
     <FxCompile Include="DistortPS.hlsl">
       <Filter>Source\Rendering\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="HorizontalReductionPS.hlsl">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Sprite.fx">

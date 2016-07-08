@@ -17,10 +17,10 @@ float4 PSMain(VSOutput input) : SV_TARGET
 
 	v0 = (v0 + 1) / 2;
 
-	float2 newCoords = float2(input.TexCoord.x, v0);
+	float2 newCoords = float2(input.TexCoord.x ,v0);
 
 	float horizontal = Texture.Sample(Sampler, newCoords).r;
 	float vertical = Texture.Sample(Sampler, newCoords.yx).r;
 
-	return float4(horizontal,vertical,0,1);
+	return float4(horizontal, vertical, 0, 1);
 }

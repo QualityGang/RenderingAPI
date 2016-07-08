@@ -1,27 +1,43 @@
 #include "ShadowMap.h"
 #include "ComputeDistancesPS.h"
 #include "DistortPS.h"
+#include "HorizontalReductionPS.h"
 
 ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) :
 	context(context), distancesRT(context), distortRT(context), sceneRenderTexture(context)
 {
 	shadowMapSize = 2 << size;
-	ComputeDistancesPS = context->createPixelShader(g_ComputeDistancesPS, sizeof(g_ComputeDistancesPS));
-	ComputeDistancesCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
+	reductionChainCount = size;
 
-	DistortPS = context->createPixelShader(g_DistortPS, sizeof(g_DistortPS));
-	DistortCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
+	computeDistancesPS = context->createPixelShader(g_ComputeDistancesPS, sizeof(g_ComputeDistancesPS));
+	computeDistancesCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
+
+	distortPS = context->createPixelShader(g_DistortPS, sizeof(g_DistortPS));
+	//distortCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
+
+	hReductionPS = context->createPixelShader(g_HorizontalReductionPS, sizeof(g_HorizontalReductionPS));
+	hReductionCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
+
+	for (int i = 0; i < reductionChainCount; ++i)
+	{
+		reductionRT.push_back(new RenderTexture(context));
+	}
 }
 
 ShadowMap::~ShadowMap()
 {
-	context->releasePixelShader(ComputeDistancesPS);
-	context->releasePixelShader(DistortPS);
-	context->releaseBuffer(DistortCB);
-	context->releaseBuffer(ComputeDistancesCB);
-}
+	context->releasePixelShader(computeDistancesPS);
+	context->releasePixelShader(distortPS);
+	context->releasePixelShader(hReductionPS);
+	context->releaseBuffer(distortCB);
+	context->releaseBuffer(computeDistancesCB);
+	context->releaseBuffer(hReductionCB);
 
-#include "Bitmap.h";
+	for (auto rt : reductionRT)
+	{
+		delete rt;
+	}
+}
 
 void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 {
@@ -32,6 +48,11 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 
 	if (!sceneRenderTarget)
 		return;
+
+	for (int i = 0; i < reductionRT.size(); ++i)
+	{
+		reductionRT[i]->create(2 << i, shadowMapSize, PixelFormat_RG16F);
+	}
 
 	TextureSize rtSize;
 	context->getRenderTargetSize(renderTarget, 0, &rtSize);
@@ -44,6 +65,28 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 	}
 }
 
+void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source)
+{
+	TextureSize dsize;
+	context->getTexture2DSize(source->getTexture2D(), &dsize);
+
+	MapData reductionMapData;
+	context->mapBuffer(hReductionCB, MapType_Write, &reductionMapData);
+	float *tDims = (float*)reductionMapData.mem;
+	tDims[0] = 1.0f / (float)dsize.width;
+	tDims[1] = 1.0f / (float)dsize.height;
+	context->unmapBuffer(hReductionCB);
+	context->setPSConstantBuffers(&hReductionCB, 0, 1);
+
+	int step = reductionChainCount - 1;
+
+	while (step >= 0)
+	{
+		renderFullscreenQuad(batch, reductionRT[step]->getRenderTarget(), source->getTexture2D(), nullptr, 255);
+		step--;
+	}
+}
+
 void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 {
 	if (!sceneRenderTarget)
@@ -52,19 +95,24 @@ void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 	hTexture2D surface = context->getTexture2D(sceneRenderTarget, 0);
 	context->copyTexture2D(surface, sceneRenderTexture.getTexture2D());
 	context->releaseTexture2D(surface);
+
 	context->setDepthStencilState(context->DSSNone);
-	MapData mapData;
-	context->mapBuffer(ComputeDistancesCB, MapType_Write, &mapData);
-	float *bgColor = (float*)mapData.mem;
+
+	MapData distancesMapData;
+	context->mapBuffer(computeDistancesCB, MapType_Write, &distancesMapData);
+	float *bgColor = (float*)distancesMapData.mem;
 	bgColor[0] = (float)backgroundColor.r / 255.0f;
 	bgColor[1] = (float)backgroundColor.g / 255.0f;
 	bgColor[2] = (float)backgroundColor.b / 255.0f;
 	bgColor[3] = (float)backgroundColor.a / 255.0f;
-	context->unmapBuffer(ComputeDistancesCB);
-	context->setPSConstantBuffers(&ComputeDistancesCB, 0, 1);
+	context->unmapBuffer(computeDistancesCB);
+	context->setPSConstantBuffers(&computeDistancesCB, 0, 1);
 
-	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), ComputeDistancesPS, 255);
-	renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), DistortPS, 255);
+	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), computeDistancesPS, 255);
+	renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), distortPS, 255);
+
+	ApplyReduction(batch, &distortRT);
+
 	renderFullscreenQuad(batch, sceneRenderTarget, distortRT.getTexture2D(), nullptr, 255);
 }
 

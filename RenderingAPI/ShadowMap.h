@@ -5,6 +5,9 @@
 #include "Sprite.h"
 #include "SpriteBatch.h"
 #include "ShadowMapSize.h"
+#include <vector>
+
+using std::vector;
 
 class ShadowMap : NonCopyable
 {
@@ -13,24 +16,30 @@ public:
 	DLL_REN_API ~ShadowMap();
 
 	DLL_REN_API void setRenderTarget(hRenderTarget renderTarget);
+	DLL_REN_API void ApplyReduction(SpriteBatch &batch, RenderTexture *source);
 	DLL_REN_API void draw(SpriteBatch &batch, Color backgroundColor);
 
 	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader, float alpha) const;
 private:
 	GraphicsContext *context;
-	int shadowMapSize = ShadowMapSize::Default;
+	int shadowMapSize = 2 << ShadowMapSize::Default;
+	int reductionChainCount = ShadowMapSize::Default;
 
 	RenderTexture sceneRenderTexture;
 	hRenderTarget sceneRenderTarget;
 	TextureSize   size;
 
-	hPixelShader  ComputeDistancesPS;
-	hBuffer       ComputeDistancesCB;
+	hPixelShader  computeDistancesPS;
+	hBuffer       computeDistancesCB;
 
-	hPixelShader  DistortPS;
-	hBuffer       DistortCB;
+	hPixelShader  distortPS;
+	hBuffer       distortCB;
+
+	hPixelShader  hReductionPS;
+	hBuffer       hReductionCB;
 
 	RenderTexture distancesRT;
 	RenderTexture distortRT;
+	vector<RenderTexture*> reductionRT;
 };
 
