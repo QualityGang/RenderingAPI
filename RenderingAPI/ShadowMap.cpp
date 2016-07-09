@@ -5,7 +5,7 @@
 #include "DrawShadowPS.h"
 
 ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) :
-	context(context), distancesRT(context), distortRT(context), shadowRT(context), sceneRenderTexture(context)
+	context(context), distancesRT(context), distortRT(context), shadowMapRT(context), sceneRenderTexture(context)
 {
 	shadowMapSize = 2 << size;
 	reductionChainCount = size;
@@ -58,7 +58,7 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 		reductionRT[i]->create(2 << i, shadowMapSize, PixelFormat_RG16F);
 	}
 
-	shadowRT.create(shadowMapSize, shadowMapSize);
+	shadowMapRT.create(shadowMapSize, shadowMapSize);
 
 	TextureSize rtSize;
 	context->getRenderTargetSize(renderTarget, 0, &rtSize);
@@ -95,7 +95,7 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 		step--;
 	}
 
-	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[step + 1]->getTexture2D(), hReductionPS, 255);
+	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, 255);
 }
 
 void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
@@ -122,27 +122,29 @@ void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), computeDistancesPS, 255);
 	renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), distortPS, 255);
 
-	ApplyReduction(batch, &distortRT, &shadowRT);
+	ApplyReduction(batch, &distortRT, &shadowMapRT);
 
-	renderFullscreenQuad(batch, sceneRenderTarget, distortRT.getTexture2D(), nullptr, 255);
+	context->setPSTexture2Ds(&shadowMapRT.getTexture2D(), 1, 1);
+
+	renderFullscreenQuad(batch, sceneRenderTarget, distortRT.getTexture2D(), shadowPS, 255);
 }
 
-void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget renderTarget, hTexture2D texture, hPixelShader pixelShader, float alpha) const
+void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget destination, hTexture2D source, hPixelShader pixelShader, float alpha) const
 {
 	TextureSize surfSize;
-	context->getRenderTargetSize(renderTarget, 0, &surfSize);
+	context->getRenderTargetSize(destination, 0, &surfSize);
 
 	TextureSize texSize;
-	context->getTexture2DSize(texture, &texSize);
+	context->getTexture2DSize(source, &texSize);
 
 	Sprite sprite;
 	sprite.setPosition(0, 0);
 	sprite.setSize((float)surfSize.width, (float)surfSize.height);
 	sprite.setSrcRect(FloatRect(0, 0, (float)texSize.width, (float)texSize.height));
-	sprite.setTexture(texture);
+	sprite.setTexture(source);
 	sprite.setColor(Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, alpha));
 
-	batch.begin(renderTarget, SpriteSortMode_Deferred, nullptr, nullptr, pixelShader);
+	batch.begin(destination, SpriteSortMode_Deferred, nullptr, nullptr, pixelShader);
 	batch.draw(sprite);
 	batch.end();
 }
