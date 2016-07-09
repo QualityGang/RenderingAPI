@@ -19,7 +19,7 @@ public:
 	DLL_REN_API void ApplyReduction(SpriteBatch &batch, RenderTexture *source, RenderTexture* destination);
 	DLL_REN_API void draw(SpriteBatch &batch, Color backgroundColor);
 
-	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget destination, hTexture2D source, hPixelShader pixelShader, float alpha) const;
+	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget destination, hTexture2D source, hVertexShader vertexShader, hPixelShader pixelShader, float alpha) const;
 private:
 	GraphicsContext *context;
 	int shadowMapSize = 2 << ShadowMapSize::Default;
@@ -36,6 +36,7 @@ private:
 	hBuffer       distortCB;
 
 	hPixelShader  hReductionPS;
+	hVertexShader hReductionVS;
 	hBuffer       hReductionCB;
 
 	hPixelShader  shadowPS;

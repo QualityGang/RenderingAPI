@@ -47,6 +47,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	Bitmap bmp(context, "sunset.png");
 	Bitmap bmp2(context, "dtest.png");
+	Bitmap bmp4(context, "box.png");
 
 	Font font("arial.ttf", 40);
 	FontAtlas atlas(context, FA_ALLLOWERCASE FA_ALLUPPERCASE FA_ALLNUMBERS "_", font);
@@ -63,6 +64,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	sprite2.setSize((float)window.getSize().x, (float)window.getSize().y);
 	sprite2.setSrcRect(FloatRect(0, 0, (float)bmp2.getWidth(), (float)bmp2.getHeight()));
 	sprite2.setTexture(bmp2.getTexture2D());
+
+	Sprite sprite3;
+	sprite3.setPosition(200, 350);
+	sprite3.setSize(50, 50);
+	sprite3.setSrcRect(FloatRect(0, 0, (float)bmp4.getWidth(), (float)bmp4.getHeight()));
+	sprite3.setTexture(bmp3.getTexture2D());
 
 	BloomSettings settings;
 	settings.bloomThreshold = 0.25f;
@@ -122,7 +129,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			window.clear(bg);
 
 			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
-			batch.draw(sprite2);
+			batch.draw(sprite3);
 			batch.end();
 
 			shadowMap.draw(batch,bg);

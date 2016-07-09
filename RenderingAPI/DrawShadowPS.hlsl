@@ -1,4 +1,4 @@
-Texture2D    Texture			: register(t0); 
+Texture2D    Texture			: register(t0);
 Texture2D    ShadowMapTexture	: register(t1);
 SamplerState Sampler			: register(s0);
 

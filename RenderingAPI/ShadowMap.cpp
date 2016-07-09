@@ -2,6 +2,7 @@
 #include "ComputeDistancesPS.h"
 #include "DistortPS.h"
 #include "HorizontalReductionPS.h"
+#include "HorizontalReductionVS.h"
 #include "DrawShadowPS.h"
 
 ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) :
@@ -16,6 +17,7 @@ ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) :
 	distortPS = context->createPixelShader(g_DistortPS, sizeof(g_DistortPS));
 	//distortCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
 
+	hReductionVS = context->createVertexShader(g_HorizontalReductionVS, sizeof(g_HorizontalReductionVS));
 	hReductionPS = context->createPixelShader(g_HorizontalReductionPS, sizeof(g_HorizontalReductionPS));
 	hReductionCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
 
@@ -88,14 +90,14 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 		context->unmapBuffer(hReductionCB);
 		context->setPSConstantBuffers(&hReductionCB, 0, 1);
 
-		renderFullscreenQuad(batch, reductionRT[step]->getRenderTarget(), source->getTexture2D(), hReductionPS, 255);
+		renderFullscreenQuad(batch, reductionRT[step]->getRenderTarget(), source->getTexture2D(), hReductionVS, hReductionPS, 255);
 
 		source = reductionRT[step];
 
 		step--;
 	}
 
-	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, 255);
+	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, nullptr, 255);
 }
 
 void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
@@ -119,8 +121,8 @@ void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 	context->unmapBuffer(computeDistancesCB);
 	context->setPSConstantBuffers(&computeDistancesCB, 0, 1);
 
-	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), computeDistancesPS, 255);
-	renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), distortPS, 255);
+	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), nullptr, computeDistancesPS, 255);
+	renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), nullptr, distortPS, 255);
 
 	ApplyReduction(batch, &distortRT, &shadowMapRT);
 
@@ -128,13 +130,13 @@ void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 
 	context->setPSTexture2Ds(&shadowMapRT.getTexture2D(), 1, 1);
 
-	renderFullscreenQuad(batch, sceneRenderTarget, distortRT.getTexture2D(), shadowPS, 255);
+	renderFullscreenQuad(batch, sceneRenderTarget, distortRT.getTexture2D(), nullptr, shadowPS, 255);
 
 	hTexture2D nullTex;
 	context->setPSTexture2Ds(&nullTex, 1, 1);
 }
 
-void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget destination, hTexture2D source, hPixelShader pixelShader, float alpha) const
+void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget destination, hTexture2D source, hVertexShader vertexShader, hPixelShader pixelShader, float alpha) const
 {
 	TextureSize surfSize;
 	context->getRenderTargetSize(destination, 0, &surfSize);
@@ -149,7 +151,7 @@ void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget destinati
 	sprite.setTexture(source);
 	sprite.setColor(Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, alpha));
 
-	batch.begin(destination, SpriteSortMode_Deferred, nullptr, nullptr, pixelShader);
+	batch.begin(destination, SpriteSortMode_Deferred, nullptr, vertexShader, pixelShader);
 	batch.draw(sprite);
 	batch.end();
 }
