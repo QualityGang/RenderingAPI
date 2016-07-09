@@ -42,27 +42,26 @@ float GetShadowDistanceV(float2 TexCoord)
 
 float4 PSMain(VSOutput input) : SV_TARGET
 {
-	//float distance = length(input.TexCoord - 0.5f);
+	float distance = length(input.TexCoord - 0.5f);
 
-	//float shadowMapDistance;
+	float shadowMapDistance;
 
-	//float nX = (input.TexCoord.x - 0.5f) * 2;
-	//float nY = (input.TexCoord.y - 0.5f) * 2;
+	float nX = (input.TexCoord.x - 0.5f) * 2;
+	float nY = (input.TexCoord.y - 0.5f) * 2;
 
-	//// Basic algebra to see which quadrant we are in. (y = x and y = -x lines form the quadrants)
-	//if (abs(nY) < abs(nX))
-	//{
-	//	shadowMapDistance = GetShadowDistanceH(input.TexCoord); // We are in horizontral quadrants.
-	//}
-	//else
-	//{
-	//	shadowMapDistance = GetShadowDistanceV(input.TexCoord); // We are in vertical quadrants.
-	//}
+	// Basic algebra to see which quadrant we are in. (y = x and y = -x lines form the quadrants)
+	if (abs(nY) < abs(nX))
+	{
+		shadowMapDistance = GetShadowDistanceH(input.TexCoord); // We are in horizontral quadrants.
+	}
+	else
+	{
+		shadowMapDistance = GetShadowDistanceV(input.TexCoord); // We are in vertical quadrants.
+	}
 
-	//float light = distance < shadowMapDistance ? 1 : 0;
-	//float4 result = light;
-	//result.b = length(input.TexCoord - 0.5f);
-	//result.a = 1;
-	//return result;
-	return Texture.Sample(Sampler, input.TexCoord);
+	float light = distance < shadowMapDistance ? 1 : 0;
+	float4 result = light;
+	result.b = length(input.TexCoord - 0.5f);
+	result.a = 0.5;
+	return result;
 }
