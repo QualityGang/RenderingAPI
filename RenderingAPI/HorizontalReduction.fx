@@ -1,5 +1,5 @@
-Texture2D    Texture : register(t0);
-SamplerState Sampler : register(s0);
+Texture2D    Texture		: register(t0);
+SamplerState Sampler		: register(s0);
 
 cbuffer cbReductionData : register(b0)
 {
@@ -19,12 +19,12 @@ struct VSOutput
 	float2 TexCoord : TEXCOORD;
 	float4 Color    : COLOR;
 };
-
+ 
 VSOutput VSMain(VSInput input)
 {
 	VSOutput output;
-	output.Position = float4(input.Position.x, input.Position.y, input.Position.z, 1) 
-		+ float4(-TextureDimensions.x, TextureDimensions.y, 0, 0);
+	output.Position = input.Position;
+	output.Color = input.Color;
 	output.TexCoord = input.TexCoord;
 
 	return output;

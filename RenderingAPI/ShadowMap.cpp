@@ -77,7 +77,7 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 {
 	int step = reductionChainCount - 1;
 
-	while (step >= 0)
+	//while (step >= 0)
 	{
 		TextureSize dsize;
 		context->getTexture2DSize(source->getTexture2D(), &dsize);
