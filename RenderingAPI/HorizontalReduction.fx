@@ -17,14 +17,12 @@ struct VSOutput
 {
 	float4 Position : SV_POSITION;
 	float2 TexCoord : TEXCOORD;
-	float4 Color    : COLOR;
 };
  
 VSOutput VSMain(VSInput input)
 {
 	VSOutput output;
 	output.Position = input.Position;
-	output.Color = input.Color;
 	output.TexCoord = input.TexCoord;
 
 	return output;

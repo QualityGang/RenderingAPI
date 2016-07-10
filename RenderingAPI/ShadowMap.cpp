@@ -77,7 +77,7 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 {
 	int step = reductionChainCount - 1;
 
-	//while (step >= 0)
+	while (step >= 0)
 	{
 		TextureSize dsize;
 		context->getTexture2DSize(source->getTexture2D(), &dsize);
@@ -98,6 +98,9 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 	}
 
 	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, nullptr, 255);
+
+	hTexture2D nullTex;
+	context->setPSTexture2Ds(&nullTex, 1, 1);
 }
 
 void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)

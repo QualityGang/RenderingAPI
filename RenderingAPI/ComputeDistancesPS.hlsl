@@ -5,7 +5,7 @@ SamplerState Sampler : register(s0);
 
 cbuffer cbDistanceData : register(b0)
 {
-	float4 BackgroundColor;
+	float BackgroundColor;
 }
 
 struct VSOutput
