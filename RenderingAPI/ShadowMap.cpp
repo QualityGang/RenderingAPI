@@ -60,7 +60,7 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 		reductionRT[i]->create(2 << i, shadowMapSize, PixelFormat_RG16F);
 	}
 
-	shadowMapRT.create(shadowMapSize, shadowMapSize);
+	shadowMapRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16);
 
 	TextureSize rtSize;
 	context->getRenderTargetSize(renderTarget, 0, &rtSize);
@@ -77,7 +77,7 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 {
 	int step = reductionChainCount - 1;
 
-	while (step >= 0)
+	//while (step >= 0)
 	{
 		TextureSize dsize;
 		context->getTexture2DSize(source->getTexture2D(), &dsize);
@@ -90,14 +90,15 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 		context->unmapBuffer(hReductionCB);
 		context->setPSConstantBuffers(&hReductionCB, 0, 1);
 
-		renderFullscreenQuad(batch, reductionRT[step]->getRenderTarget(), source->getTexture2D(), hReductionVS, hReductionPS, 255);
+		renderFullscreenQuad(batch, destination->getRenderTarget(), source->getTexture2D(), hReductionVS, hReductionPS, 255);
+		//renderFullscreenQuad(batch, reductionRT[step]->getRenderTarget(), source->getTexture2D(), hReductionVS, hReductionPS, 255);
 
 		source = reductionRT[step];
 
 		step--;
 	}
 
-	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, nullptr, 255);
+	//renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, nullptr, 255);
 
 	hTexture2D nullTex;
 	context->setPSTexture2Ds(&nullTex, 1, 1);
