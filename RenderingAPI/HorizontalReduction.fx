@@ -31,7 +31,7 @@ VSOutput VSMain(VSInput input)
 float4 PSMain(VSOutput input) : SV_TARGET
 {
 	float2 color = Texture.Sample(Sampler, input.TexCoord);
-	float2 colorR = Texture.Sample(Sampler, input.TexCoord + float2(TextureDimensions.x,0));
-	float2 result = min(color, colorR);
+	float2 colorL = Texture.Sample(Sampler, input.TexCoord - float2(TextureDimensions.x,0));
+	float2 result = min(color, colorL);
 	return float4(result,0,1);
 }

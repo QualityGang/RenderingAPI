@@ -79,7 +79,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	settings.bloomSaturation = 1.5f;
 	settings.baseSaturation = 1.0f;
 
-	ShadowMap shadowMap(context, ShadowMapSize::Size512);
+	ShadowMap shadowMap(context, ShadowMapSize::Size1024);
 	shadowMap.setRenderTarget(window.getRenderTarget());
 
 	Bloom bloom(context);
@@ -129,7 +129,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			window.clear(bg);
 
 			batch.begin(window.getRenderTarget(), SpriteSortMode_Deferred, &camera);
-			batch.draw(sprite3);
+			batch.draw(sprite2);
 			batch.end();
 
 			shadowMap.draw(batch,bg);

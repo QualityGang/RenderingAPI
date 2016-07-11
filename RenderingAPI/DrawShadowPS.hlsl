@@ -43,7 +43,6 @@ float GetShadowDistanceV(float2 TexCoord)
 float4 PSMain(VSOutput input) : SV_TARGET
 {
 	float distance = length(input.TexCoord - 0.5f);
-
 	float shadowMapDistance;
 
 	float nX = (input.TexCoord.x - 0.5f) * 2;
@@ -62,6 +61,6 @@ float4 PSMain(VSOutput input) : SV_TARGET
 	float light = distance < shadowMapDistance ? 1 : 0;
 	float4 result = light;
 	result.b = length(input.TexCoord - 0.5f);
-	result.a = 0.5;
+	result.a = 1;
 	return result;
 }

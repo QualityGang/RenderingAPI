@@ -97,8 +97,8 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 		source = reductionRT[step];
 
 		step--;
-	}
-
+	}		
+	
 	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, nullptr, 255);
 
 	hTexture2D nullTex;
