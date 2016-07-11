@@ -40,8 +40,8 @@ ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) :
 	}
 
 	shadowMapRT.create(shadowMapSize, shadowMapSize);
-	processedShadowRT.create(shadowMapSize, shadowMapSize); 
 	shadowsRT.create(shadowMapSize, shadowMapSize);
+	processedShadowRT.create(shadowMapSize, shadowMapSize);
 }
 
 ShadowMap::~ShadowMap()
@@ -111,8 +111,8 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 		source = reductionRT[step];
 
 		step--;
-	}		
-	
+	}
+
 	// Render the last Level Reduction texture (2 x ShadowMapSize Texture) to the ShadowMap Render Texture
 	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, nullptr, 255);
 
@@ -158,19 +158,21 @@ void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 	// Draw the Shadows using ShadowMap and Distorted Textures into the shadowsRT Render Texture
 	renderFullscreenQuad(batch, shadowsRT.getRenderTarget(), distortRT.getTexture2D(), nullptr, shadowPS, 255);
 
-	// Apply Blur to the shadows for better looking
-	TextureSize size;
-	context->getTexture2DSize(shadowsRT.getTexture2D(), &size);
-
-	setBlurParameters(1.0f / (float)size.width, 0.0f);
-	renderFullscreenQuad(batch, processedShadowRT.getRenderTarget(), shadowsRT.getTexture2D(), nullptr, gaussianBlurPS, 255);
-
-	// Draw the processed shadows into the scene Render Target 
-	renderFullscreenQuad(batch, sceneRenderTarget, processedShadowRT.getTexture2D(), nullptr, nullptr, 255);
-
-
 	hTexture2D nullTex;
 	context->setPSTexture2Ds(&nullTex, 1, 1);
+
+	TextureSize rtSize;
+	context->getTexture2DSize(shadowsRT.getTexture2D(), &rtSize);
+
+	context->setRenderTarget(nullptr);
+	setBlurParameters(0.0f, 1.0f / (float)rtSize.height);
+	renderFullscreenQuad(batch, processedShadowRT.getRenderTarget(), shadowsRT.getTexture2D(), nullptr, gaussianBlurPS, 255);
+
+	context->setRenderTarget(nullptr);
+
+	// Draw the processed shadows into the scene Render Target 
+	renderFullscreenQuad(batch, sceneRenderTarget, processedShadowRT.getTexture2D(), nullptr, nullptr, 100);
+
 
 	context->setDepthStencilState(context->DSSDefault);
 }
@@ -275,7 +277,7 @@ void ShadowMap::setBlurParameters(float dx, float dy) const
 
 float ShadowMap::computeGaussian(float n) const
 {
-	float theta = 4.0f;
+	float theta = 2.0f;
 
 	// sqrt(2 * pi) = 2.50662827463
 	return (float)((1.0 / (2.50662827463 * theta)) * std::exp(-(n * n) / (2.0 * theta * theta)));

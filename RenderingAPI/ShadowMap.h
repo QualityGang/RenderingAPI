@@ -53,4 +53,3 @@ private:
 	RenderTexture shadowsRT;
 	RenderTexture processedShadowRT;
 };
-
