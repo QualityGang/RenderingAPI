@@ -79,7 +79,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	settings.bloomSaturation = 1.5f;
 	settings.baseSaturation = 1.0f;
 
-	ShadowMap shadowMap(context, ShadowMapSize::Size1024);
+	ShadowMap shadowMap(context, ShadowMapSize::Size512);
 	shadowMap.setRenderTarget(window.getRenderTarget());
 
 	Bloom bloom(context);

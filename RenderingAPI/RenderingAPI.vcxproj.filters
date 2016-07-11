@@ -346,18 +346,12 @@
     <FxCompile Include="DrawShadowPS.hlsl">
       <Filter>Source\Rendering\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="HorizontalReductionVS.hlsl">
-      <Filter>Source\Rendering\Shaders</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Sprite.fx">
       <Filter>Source\Rendering\Shaders</Filter>
     </Text>
     <Text Include="Primitive.fx">
-      <Filter>Source\Rendering\Shaders</Filter>
-    </Text>
-    <Text Include="HorizontalReduction.fx">
       <Filter>Source\Rendering\Shaders</Filter>
     </Text>
   </ItemGroup>

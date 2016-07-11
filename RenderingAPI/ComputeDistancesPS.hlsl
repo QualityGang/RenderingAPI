@@ -18,6 +18,9 @@ struct VSOutput
 float4 PSMain(VSOutput input) : SV_TARGET
 {
 	float4 color = Texture.Sample(Sampler, input.TexCoord);
+
+	// Compute distance from center
 	float distance = (color != BackgroundColor)  ? length(input.TexCoord - 0.5f) : 1.0f;
+	// Save it to the Red channel
 	return float4(distance,0,0,1);
 }

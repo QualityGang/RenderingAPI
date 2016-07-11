@@ -33,14 +33,11 @@ private:
 	hBuffer       computeDistancesCB;
 
 	hPixelShader  distortPS;
-	hBuffer       distortCB;
 
 	hPixelShader  hReductionPS;
-	hVertexShader hReductionVS;
 	hBuffer       hReductionCB;
 
 	hPixelShader  shadowPS;
-	hBuffer       shadowCB;
 
 	RenderTexture distancesRT;
 	RenderTexture distortRT;

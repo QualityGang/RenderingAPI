@@ -22,6 +22,7 @@ float GetShadowDistanceH(float2 TexCoord)
 
 	float2 newCoords = float2(TexCoord.x, v0);
 
+	// Horizontal info was stored in the Red component
 	return ShadowMapTexture.Sample(Sampler, newCoords).r;
 }
 
@@ -37,14 +38,19 @@ float GetShadowDistanceV(float2 TexCoord)
 
 	float2 newCoords = float2(TexCoord.y, v0);
 
+	// Vertical info was stored in the Green component
 	return ShadowMapTexture.Sample(Sampler, newCoords).g;
 }
 
 float4 PSMain(VSOutput input) : SV_TARGET
 {
+	// Distance of this pixel from the center
 	float distance = length(input.TexCoord - 0.5f);
+
+	// Distance stored in the shadow map
 	float shadowMapDistance;
 
+	// Coords in [-1,1]
 	float nX = (input.TexCoord.x - 0.5f) * 2;
 	float nY = (input.TexCoord.y - 0.5f) * 2;
 
@@ -58,9 +64,13 @@ float4 PSMain(VSOutput input) : SV_TARGET
 		shadowMapDistance = GetShadowDistanceV(input.TexCoord); // We are in vertical quadrants.
 	}
 
+	// If distance to this pixel is lower than distance got from the Shadow Map, then we are not in the shadow
+
 	float light = distance < shadowMapDistance ? 1 : 0;
+
 	float4 result = light;
 	result.b = length(input.TexCoord - 0.5f);
 	result.a = 1;
+
 	return result;
 }

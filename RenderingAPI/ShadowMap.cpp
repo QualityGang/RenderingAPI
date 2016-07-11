@@ -11,13 +11,12 @@ ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) :
 	shadowMapSize = 2 << size;
 	reductionChainCount = size;
 
+	// Initialize All Pixel Shaders and Constant Buffers
 	computeDistancesPS = context->createPixelShader(g_ComputeDistancesPS, sizeof(g_ComputeDistancesPS));
 	computeDistancesCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
 
 	distortPS = context->createPixelShader(g_DistortPS, sizeof(g_DistortPS));
-	//distortCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
 
-	hReductionVS = context->createVertexShader(g_HorizontalReductionVS, sizeof(g_HorizontalReductionVS));
 	hReductionPS = context->createPixelShader(g_HorizontalReductionPS, sizeof(g_HorizontalReductionPS));
 	hReductionCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
 
@@ -27,15 +26,27 @@ ShadowMap::ShadowMap(GraphicsContext* context, ShadowMapSize size) :
 	}
 
 	shadowPS = context->createPixelShader(g_DrawShadowPS, sizeof(g_DrawShadowPS));
-	//shadowCB = context->createBuffer(BufferType_ConstantBuffer, 16, AccessFlag_Write, nullptr);
+
+	// Create render Textures
+	distancesRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16F);
+	distortRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16F);
+	for (int i = 0; i < reductionRT.size(); ++i)
+	{
+		reductionRT[i]->create(2 << i, shadowMapSize, PixelFormat_RG16F);
+	}
+
+	shadowMapRT.create(shadowMapSize, shadowMapSize);
 }
 
 ShadowMap::~ShadowMap()
 {
+	// Release.
+
 	context->releasePixelShader(computeDistancesPS);
 	context->releasePixelShader(distortPS);
 	context->releasePixelShader(hReductionPS);
-	context->releaseBuffer(distortCB);
+	context->releasePixelShader(shadowPS);
+
 	context->releaseBuffer(computeDistancesCB);
 	context->releaseBuffer(hReductionCB);
 
@@ -49,18 +60,8 @@ void ShadowMap::setRenderTarget(hRenderTarget renderTarget)
 {
 	sceneRenderTarget = renderTarget;
 
-	distancesRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16F);
-	distortRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16F);
-
 	if (!sceneRenderTarget)
 		return;
-
-	for (int i = 0; i < reductionRT.size(); ++i)
-	{
-		reductionRT[i]->create(2 << i, shadowMapSize, PixelFormat_RG16F);
-	}
-
-	shadowMapRT.create(shadowMapSize, shadowMapSize, PixelFormat_RG16);
 
 	TextureSize rtSize;
 	context->getRenderTargetSize(renderTarget, 0, &rtSize);
@@ -77,6 +78,7 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 {
 	int step = reductionChainCount - 1;
 
+	// Since the Distances of the pixels are stored in the Distorted Texture we don't want colors to mix
 	context->setPSSamplers(&context->SSPointClamp, 0, 1);
 
 	while (step >= 0)
@@ -92,6 +94,7 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 		context->unmapBuffer(hReductionCB);
 		context->setPSConstantBuffers(&hReductionCB, 0, 1);
 
+		// Write the Prev Level Reduction to the Next Reduction Render Texture and Apply hReduction on It
 		renderFullscreenQuad(batch, reductionRT[step]->getRenderTarget(), source->getTexture2D(), nullptr, hReductionPS, 255);
 
 		source = reductionRT[step];
@@ -99,11 +102,10 @@ void ShadowMap::ApplyReduction(SpriteBatch& batch, RenderTexture* source, Render
 		step--;
 	}		
 	
+	// Render the last Level Reduction texture (2 x ShadowMapSize Texture) to the ShadowMap Render Texture
 	renderFullscreenQuad(batch, destination->getRenderTarget(), reductionRT[0]->getTexture2D(), nullptr, nullptr, 255);
 
-	hTexture2D nullTex;
-	context->setPSTexture2Ds(&nullTex, 1, 1);
-
+	// Set the Sampler to normal
 	context->setPSSamplers(&context->SSLinearClamp, 0, 1);
 }
 
@@ -128,19 +130,26 @@ void ShadowMap::draw(SpriteBatch &batch, Color backgroundColor)
 	context->unmapBuffer(computeDistancesCB);
 	context->setPSConstantBuffers(&computeDistancesCB, 0, 1);
 
+	// Apply "ComputeDistancesPS" shader to Scene RenderTexture and Write it into "Distances" Render Texture
 	renderFullscreenQuad(batch, distancesRT.getRenderTarget(), sceneRenderTexture.getTexture2D(), nullptr, computeDistancesPS, 255);
+
+	// Apply "DistortPS" shader to "Distances" Render Texture and Write it into "Distort" Render Texture
 	renderFullscreenQuad(batch, distortRT.getRenderTarget(), distancesRT.getTexture2D(), nullptr, distortPS, 255);
 
+	// Apply horizontal reduction to the distorted texture
 	ApplyReduction(batch, &distortRT, &shadowMapRT);
 
 	context->setRenderTarget(nullptr);
 
+	// Set the shader's Texture
 	context->setPSTexture2Ds(&shadowMapRT.getTexture2D(), 1, 1);
 
+	// Draw the Shadows using ShadowMap and Distorted Textures into the main Render Target
 	renderFullscreenQuad(batch, sceneRenderTarget, distortRT.getTexture2D(), nullptr, shadowPS, 255);
 
 	hTexture2D nullTex;
 	context->setPSTexture2Ds(&nullTex, 1, 1);
+	context->setDepthStencilState(context->DSSDefault);
 }
 
 void ShadowMap::renderFullscreenQuad(SpriteBatch& batch, hRenderTarget destination, hTexture2D source, hVertexShader vertexShader, hPixelShader pixelShader, float alpha) const
