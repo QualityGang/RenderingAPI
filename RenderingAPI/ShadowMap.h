@@ -8,6 +8,7 @@
 #include <vector>
 
 using std::vector;
+using namespace DirectX;
 
 class ShadowMap : NonCopyable
 {
@@ -19,8 +20,11 @@ public:
 	DLL_REN_API void ApplyReduction(SpriteBatch &batch, RenderTexture *source, RenderTexture* destination);
 	DLL_REN_API void draw(SpriteBatch &batch, Color backgroundColor);
 
-	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget destination, hTexture2D source, hVertexShader vertexShader, hPixelShader pixelShader, float alpha) const;
 private:
+	void renderFullscreenQuad(SpriteBatch &batch, hRenderTarget destination, hTexture2D source, hVertexShader vertexShader, hPixelShader pixelShader, float alpha) const;
+	void setBlurParameters(float dx, float dy) const;
+	float computeGaussian(float n) const;
+
 	GraphicsContext *context;
 	int shadowMapSize = 2 << ShadowMapSize::Default;
 	int reductionChainCount = ShadowMapSize::Default;
@@ -39,9 +43,14 @@ private:
 
 	hPixelShader  shadowPS;
 
+	hPixelShader gaussianBlurPS;
+	hBuffer      gaussianBlurCB;
+
 	RenderTexture distancesRT;
 	RenderTexture distortRT;
 	vector<RenderTexture*> reductionRT;
 	RenderTexture shadowMapRT;
+	RenderTexture shadowsRT;
+	RenderTexture processedShadowRT;
 };
 
